@@ -1,6 +1,10 @@
 # swedish-event-planners
 Event planning tool for the company Swedish Event Planners (project for Modern Methods of Software Engineering)
 
+## Login
+
+Currently, one hardcoded user exists. Use the credentials `user` and `password` to log in. Users cannot register.
+
 ## Project structure
 
 - `MainView.java` in `src/main/java` contains the navigation setup. It uses [App Layout](https://vaadin.com/components/vaadin-app-layout).
