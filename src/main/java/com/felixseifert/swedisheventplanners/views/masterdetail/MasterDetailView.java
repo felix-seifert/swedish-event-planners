@@ -1,9 +1,9 @@
 package com.felixseifert.swedisheventplanners.views.masterdetail;
 
-import java.util.Optional;
-
 import com.felixseifert.swedisheventplanners.data.entity.Person;
 import com.felixseifert.swedisheventplanners.data.service.PersonService;
+import com.felixseifert.swedisheventplanners.security.Role;
+import com.felixseifert.swedisheventplanners.views.main.MainView;
 import com.vaadin.flow.component.AbstractField;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -20,14 +20,16 @@ import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.vaadin.artur.helpers.CrudServiceDataProvider;
-import com.felixseifert.swedisheventplanners.views.main.MainView;
+
+import java.util.Optional;
 
 @Route(value = "master-detail", layout = MainView.class)
 @PageTitle("Master-Detail")
 @CssImport("./styles/views/masterdetail/master-detail-view.css")
+@Secured(Role.ForAnnotation.ADMINISTRATION_MANAGER_WITH_PREFIX)
 public class MasterDetailView extends Div {
 
     private Grid<Person> grid;

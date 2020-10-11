@@ -3,7 +3,53 @@ Event planning tool for the company Swedish Event Planners (project for Modern M
 
 ## Login
 
-Currently, one hardcoded user exists. Use the credentials `user` and `password` to log in. Users cannot register.
+The source code includes a hardcoded version of the different roles and how they are assigned to the also hardcoded 
+users. One can log in with the username which is provided below and the password `password`. The implementation of the users can be seen in the 
+[`SecurityConfiguration`](https://github.com/felix-seifert/swedish-event-planners/blob/main/src/main/java/com/felixseifert/swedisheventplanners/security/SecurityConfiguration.java).
+
+The following roles exist:
+* `AdministrationManager`
+* `SeniorCustomerServiceOfficer`
+* `CustomerServiceOfficer`
+* `SeniorHRManager`
+* `HRAssistant`
+* `HREmployee`
+* `MarketingOfficer`
+* `MarketingAssistant`
+* `MarketingEmployee`
+* `FinancialManager`
+* `Accountant`
+* `ProductionManager`
+* `ProductionSubTeam`
+* `ServicesManager`
+* `ServicesSubTeam`
+* `VicePresident`
+* `Secretary`
+* `ClientViewer`
+* `EmployeeViewer`
+* `StaffViewer`
+* `Client`
+
+The following list shows all the users with their user name and which roles they have:
+* `mike`: `AdministrationManager`
+* `janet`: `SeniorCustomerServiceOfficer`, `ClientViewer`
+* `cso`: `CustomerServiceOfficer`
+* `simon`: `SeniorHRManager`, `HREmployee`, `EmployeeViewer`
+* `maria`: `HRAssistant`, `HREmployee`, `EmployeeViewer`
+* `david`: `MarketingOfficer`, `MarketingEmployee`, `ClientViewer`
+* `emma`: `MarketingAssistant`, `MarketingEmployee`, `ClientViewer`
+* `alice`: `FinancialManager`, `Accountant`, `ClientViewer`, `EmployeeViewer`
+* `jack`: `ProductionManager`, `StaffViewer`
+* `production`: `ProductionSubTeam`
+* `natalie`: `ServicesManager`, `StaffViewer`
+* `services`: `ServicesSubTeam`
+* `charlie`: `VicePresident`
+* `secretary`: `Secretary`, `EmployeeViewer`
+* `client`: `Client`
+
+For testing purposes, the page `Master Detail` is only visible by the user `mike`. Relevant changes for this can be 
+done with an annotation over the class name of the view and the menu in 
+[`MainView.java`](https://github.com/felix-seifert/swedish-event-planners/blob/main/src/main/java/com/felixseifert/swedisheventplanners/views/main/MainView.java).
 
 ## Project structure
 

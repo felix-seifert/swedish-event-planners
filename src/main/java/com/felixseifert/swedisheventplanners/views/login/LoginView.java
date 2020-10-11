@@ -1,6 +1,5 @@
 package com.felixseifert.swedisheventplanners.views.login;
 
-import com.felixseifert.swedisheventplanners.views.main.MainView;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.login.LoginForm;

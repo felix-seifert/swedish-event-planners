@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -43,14 +42,113 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         // Do NOT configure users directly in code for applications in production!
 
-        // Configure user with username 'user' and password 'password'
-        UserDetails user =
-                User.withUsername("user")
+        UserDetails mike =
+                User.withUsername("mike")
                         .password("{noop}password")
-                        .roles("USER")
+                        .roles(Role.ADMINISTRATION_MANAGER.getValue())
                         .build();
 
-        return new InMemoryUserDetailsManager(user);
+        UserDetails janet =
+                User.withUsername("janet")
+                        .password("{noop}password")
+                        .roles(Role.SENIOR_CUSTOMER_SERVICE_OFFICER.getValue(),
+                                Role.CLIENT_VIEWER.getValue())
+                        .build();
+
+        UserDetails cso =
+                User.withUsername("cso")
+                        .password("{noop}password")
+                        .roles(Role.CUSTOMER_SERVICE_OFFICER.getValue())
+                        .build();
+
+        UserDetails simon =
+                User.withUsername("simon")
+                        .password("{noop}password")
+                        .roles(Role.SENIOR_HR_MANAGER.getValue(),
+                                Role.HR_EMPLOYEE.getValue(),
+                                Role.EMPLOYEE_VIEWER.getValue())
+                        .build();
+
+        UserDetails maria =
+                User.withUsername("maria")
+                        .password("{noop}password")
+                        .roles(Role.HR_ASSISTANT.getValue(),
+                                Role.HR_EMPLOYEE.getValue(),
+                                Role.EMPLOYEE_VIEWER.getValue())
+                        .build();
+
+        UserDetails david =
+                User.withUsername("david")
+                        .password("{noop}password")
+                        .roles(Role.MARKETING_OFFICER.getValue(),
+                                Role.MARKETING_EMPLOYEE.getValue(),
+                                Role.CLIENT_VIEWER.getValue())
+                        .build();
+
+        UserDetails emma =
+                User.withUsername("emma")
+                        .password("{noop}password")
+                        .roles(Role.MARKETING_ASSISTANT.getValue(),
+                                Role.MARKETING_EMPLOYEE.getValue(),
+                                Role.CLIENT_VIEWER.getValue())
+                        .build();
+
+        UserDetails alice =
+                User.withUsername("alice")
+                        .password("{noop}password")
+                        .roles(Role.FINANCIAL_MANAGER.getValue(),
+                                Role.ACCOUNTANT.getValue(),
+                                Role.CLIENT_VIEWER.getValue(),
+                                Role.EMPLOYEE_VIEWER.getValue())
+                        .build();
+
+        UserDetails jack =
+                User.withUsername("jack")
+                        .password("{noop}password")
+                        .roles(Role.PRODUCTION_MANAGER.getValue(),
+                                Role.STAFF_VIEWER.getValue())
+                        .build();
+
+        UserDetails production =
+                User.withUsername("production")
+                        .password("{noop}password")
+                        .roles(Role.PRODUCTION_SUB_TEAM.getValue())
+                        .build();
+
+        UserDetails natalie =
+                User.withUsername("natalie")
+                        .password("{noop}password")
+                        .roles(Role.SERVICES_MANAGER.getValue(),
+                                Role.STAFF_VIEWER.getValue())
+                        .build();
+
+        UserDetails services =
+                User.withUsername("services")
+                        .password("{noop}password")
+                        .roles(Role.SERVICES_SUB_TEAM.getValue())
+                        .build();
+
+        UserDetails charlie =
+                User.withUsername("charlie")
+                        .password("{noop}password")
+                        .roles(Role.VICE_PRESIDENT.getValue())
+                        .build();
+
+        UserDetails secretary =
+                User.withUsername("secretary")
+                        .password("{noop}password")
+                        .roles(Role.SECRETARY.getValue(),
+                                Role.EMPLOYEE_VIEWER.getValue())
+                        .build();
+
+        UserDetails client =
+                User.withUsername("client")
+                        .password("{noop}password")
+                        .roles(Role.CLIENT.getValue())
+                        .build();
+
+        return new InMemoryUserDetailsManager(mike, janet, cso, simon, maria, david, emma, alice, jack,
+                production, natalie, services, charlie, secretary, client);
     }
 
     @Override
