@@ -6,7 +6,6 @@ import lombok.Setter;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-import java.util.Objects;
 
 @MappedSuperclass
 @Getter
@@ -27,6 +26,6 @@ public abstract class AbstractEntity {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return 11;
     }
 }

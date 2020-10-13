@@ -24,11 +24,12 @@ public class DataGenerator {
 
             log.info("Generating demo data");
 
-            log.info("... generating 100 Person entities...");
+            int numberOfClients = 30;
+            log.info("... generating {} Person entities...", numberOfClients);
             ExampleDataGenerator<Client> personRepositoryGenerator = new ExampleDataGenerator<>(Client.class, seed);
             personRepositoryGenerator.setData(Client::setName, DataType.COMPANY_NAME);
             personRepositoryGenerator.setData(Client::setContactDetails, DataType.EMAIL);
-            clientRepository.saveAll(personRepositoryGenerator.create(30));
+            clientRepository.saveAll(personRepositoryGenerator.create(numberOfClients));
 
             log.info("Generated demo data");
         };

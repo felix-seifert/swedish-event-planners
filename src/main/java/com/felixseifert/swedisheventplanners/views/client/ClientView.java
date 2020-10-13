@@ -17,7 +17,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
 @Route(value = "clients", layout = MainView.class)
-@PageTitle("Client | Swedish Event Planners")
+@PageTitle("Clients | Swedish Event Planners")
 public class ClientView extends Div {
 
     private ClientService clientService;
