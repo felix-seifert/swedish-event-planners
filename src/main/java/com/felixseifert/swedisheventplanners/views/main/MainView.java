@@ -3,6 +3,7 @@ package com.felixseifert.swedisheventplanners.views.main;
 import com.felixseifert.swedisheventplanners.security.SecurityUtils;
 import com.felixseifert.swedisheventplanners.views.about.AboutView;
 import com.felixseifert.swedisheventplanners.views.cardlist.CardListView;
+import com.felixseifert.swedisheventplanners.views.client.ClientView;
 import com.felixseifert.swedisheventplanners.views.helloworld.HelloWorldView;
 import com.felixseifert.swedisheventplanners.views.masterdetail.MasterDetailView;
 import com.felixseifert.swedisheventplanners.views.personform.PersonFormView;
@@ -23,7 +24,6 @@ import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.component.tabs.TabsVariant;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.RouterLink;
-import com.vaadin.flow.server.PWA;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +34,7 @@ import java.util.Optional;
  */
 @JsModule("./styles/shared-styles.js")
 @CssImport("./styles/views/main/main-view.css")
-@PWA(name = "Swedish Event Planners", shortName = "SEP", enableInstallPrompt = false)
+//@PWA(name = "Swedish Event Planners", shortName = "SEP", enableInstallPrompt = false)
 public class MainView extends AppLayout {
 
     private final Tabs menu;
@@ -104,6 +104,7 @@ public class MainView extends AppLayout {
         }
         tabs.add(createTab("Card List", CardListView.class));
         tabs.add(createTab("Person Form", PersonFormView.class));
+        tabs.add(createTab("Clients", ClientView.class));
 
         return tabs.toArray(new Tab[tabs.size()]);
     }
