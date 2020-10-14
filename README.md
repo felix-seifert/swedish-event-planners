@@ -51,6 +51,12 @@ For testing purposes, the page `Master Detail` is only visible by the user `mike
 done with an annotation over the class name of the view and the menu in 
 [`MainView.java`](https://github.com/felix-seifert/swedish-event-planners/blob/main/src/main/java/com/felixseifert/swedisheventplanners/views/main/MainView.java).
 
+## Implementation Details
+
+* The record numbers of every new request has exactly 10 digits and can consist out of numbers and characters.
+
+## Refactoring
+
 ## Project structure
 
 - `MainView.java` in `src/main/java` contains the navigation setup. It uses [App Layout](https://vaadin.com/components/vaadin-app-layout).

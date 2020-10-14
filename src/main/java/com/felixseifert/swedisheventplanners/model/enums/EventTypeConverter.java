@@ -5,16 +5,16 @@ import javax.persistence.Converter;
 import java.util.Arrays;
 
 @Converter
-public class EventTypeConverter implements AttributeConverter<EventType, Byte> {
+public class EventTypeConverter implements AttributeConverter<EventType, Integer> {
 
     @Override
-    public Byte convertToDatabaseColumn(EventType eventType) {
+    public Integer convertToDatabaseColumn(EventType eventType) {
         if(eventType == null) return null;
         return eventType.getDatabaseCode();
     }
 
     @Override
-    public EventType convertToEntityAttribute(Byte databaseCode) {
+    public EventType convertToEntityAttribute(Integer databaseCode) {
         if(databaseCode == null) return null;
         return Arrays.stream(EventType.values()).filter(type -> type.getDatabaseCode().equals(databaseCode))
                 .findFirst().orElseThrow(IllegalArgumentException::new);
