@@ -45,7 +45,6 @@ public class NewRequest extends AbstractEntity {
     @CollectionTable(name = "event_preferences", joinColumns = @JoinColumn(name = "new_request_id"))
     @Column(columnDefinition = "smallint")
     @Convert(converter = PreferencesConverter.class)
-    @Setter(AccessLevel.PRIVATE)
     private Set<Preference> preferences = new HashSet<>();
 
     public void addPreference(Preference preference) {
