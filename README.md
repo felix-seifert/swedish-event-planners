@@ -57,6 +57,14 @@ done with an annotation over the class name of the view and the menu in
 
 ## Refactoring
 
+Sometimes, certain improvement possibilities of the code can be achieved by refactoring it. The changes can often be 
+quite severe and the time needed for performing the required refactoring steps can be huge. In some situations,
+developers realise immediately that the improvement through refactoring is worth it. However, it is also possible
+that the amount of needed time for the refactoring is bigger than the gained improvement or the time needed would 
+result in missing the set deadlines. As the refactoring is dependent on each developer and the project scope, the code
+quality is very subjective and other people might have achieved the same differently. We also see improvement potential
+which means that a software project can barely inf an end.
+
 ## Project structure
 
 - `MainView.java` in `src/main/java` contains the navigation setup. It uses [App Layout](https://vaadin.com/components/vaadin-app-layout).
