@@ -2,16 +2,18 @@ package com.felixseifert.swedisheventplanners.model;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "clients")
 @Getter
 @Setter
-@ToString
 public class Client extends AbstractEntity {
 
+    @Column(nullable = false)
     private String name;
 
     private String contactDetails;
@@ -20,13 +22,19 @@ public class Client extends AbstractEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        Client client = (Client) o;
-        return Objects.equals(getId(), client.getId());
+        return super.equals(o);
     }
 
     @Override
     public int hashCode() {
         return 22;
+    }
+
+    @Override
+    public String toString() {
+        return "Client{" +
+                "name='" + name + '\'' +
+                ", contactDetails='" + contactDetails +
+                '}';
     }
 }

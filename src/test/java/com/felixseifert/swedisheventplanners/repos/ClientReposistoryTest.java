@@ -50,11 +50,11 @@ public class ClientReposistoryTest {
     @Test
     public void findByIdTest() {
         Optional<Client> clientActual = clientRepository.findById(client1.getId());
-        Optional<Client> employeeActualEmpty = clientRepository.findById(9999L);
+        Optional<Client> clientActualEmpty = clientRepository.findById(9999L);
 
         assertTrue(clientActual.isPresent());
         assertEquals(client1, clientActual.get());
-        assertFalse(employeeActualEmpty.isPresent());
+        assertFalse(clientActualEmpty.isPresent());
     }
 
     @Test
@@ -69,7 +69,7 @@ public class ClientReposistoryTest {
 
         assertEquals(clientToSave, clientActual);
         assertTrue(clientExists);
-        assertTrue(clientActual.getId() != null);
+        assertNotNull(clientActual.getId());
         assertEquals(3, clientListActual.size());
         assertEquals(clientToSave, clientListActual.get(2));
     }
