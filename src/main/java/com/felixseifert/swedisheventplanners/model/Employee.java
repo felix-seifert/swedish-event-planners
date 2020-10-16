@@ -31,4 +31,16 @@ public class Employee extends AbstractEntity {
     public void removeRole(Role role) {
         roles.remove(role);
     }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return 13;
+    }
 }
