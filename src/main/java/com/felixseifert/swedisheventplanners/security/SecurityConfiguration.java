@@ -54,115 +54,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         List<Employee> employeesList = createEmployees();
 
-        Employee employeeMike = employeesList.get(0);
-        Employee employeeJanet = employeesList.get(1);
+        List<UserDetails> userDetails = new ArrayList<>();
 
-        UserDetails mike =
-                User.withUsername(employeeMike.getName())
-                        .password("{noop}password")
-                        .roles(employeeMike.getRoles().stream().map(Role::getValue).toArray(String[]::new))
-                        .build();
+        for (Employee employee : employeesList) {
+            UserDetails user =
+                    User.withUsername(employee.getName())
+                    .password("{noop}password")
+                    .roles(employee.getRoles().stream().map(Role::getValue).toArray(String[]::new))
+                    .build();
 
-        UserDetails janet =
-                User.withUsername(employeeJanet.getName())
-                        .password("{noop}password")
-                        .roles(employeeJanet.getRoles().stream().map(Role::getValue).toArray(String[]::new))
-                        .build();
+            userDetails.add(user);
+        }
 
-        UserDetails cso =
-                User.withUsername("cso")
-                        .password("{noop}password")
-                        .roles(Role.CUSTOMER_SERVICE_OFFICER.getValue())
-                        .build();
-
-        UserDetails simon =
-                User.withUsername("simon")
-                        .password("{noop}password")
-                        .roles(Role.SENIOR_HR_MANAGER.getValue(),
-                                Role.HR_EMPLOYEE.getValue(),
-                                Role.EMPLOYEE_VIEWER.getValue())
-                        .build();
-
-        UserDetails maria =
-                User.withUsername("maria")
-                        .password("{noop}password")
-                        .roles(Role.HR_ASSISTANT.getValue(),
-                                Role.HR_EMPLOYEE.getValue(),
-                                Role.EMPLOYEE_VIEWER.getValue())
-                        .build();
-
-        UserDetails david =
-                User.withUsername("david")
-                        .password("{noop}password")
-                        .roles(Role.MARKETING_OFFICER.getValue(),
-                                Role.MARKETING_EMPLOYEE.getValue(),
-                                Role.CLIENT_VIEWER.getValue())
-                        .build();
-
-        UserDetails emma =
-                User.withUsername("emma")
-                        .password("{noop}password")
-                        .roles(Role.MARKETING_ASSISTANT.getValue(),
-                                Role.MARKETING_EMPLOYEE.getValue(),
-                                Role.CLIENT_VIEWER.getValue())
-                        .build();
-
-        UserDetails alice =
-                User.withUsername("alice")
-                        .password("{noop}password")
-                        .roles(Role.FINANCIAL_MANAGER.getValue(),
-                                Role.ACCOUNTANT.getValue(),
-                                Role.CLIENT_VIEWER.getValue(),
-                                Role.EMPLOYEE_VIEWER.getValue())
-                        .build();
-
-        UserDetails jack =
-                User.withUsername("jack")
-                        .password("{noop}password")
-                        .roles(Role.PRODUCTION_MANAGER.getValue(),
-                                Role.STAFF_VIEWER.getValue())
-                        .build();
-
-        UserDetails production =
-                User.withUsername("production")
-                        .password("{noop}password")
-                        .roles(Role.PRODUCTION_SUB_TEAM.getValue())
-                        .build();
-
-        UserDetails natalie =
-                User.withUsername("natalie")
-                        .password("{noop}password")
-                        .roles(Role.SERVICES_MANAGER.getValue(),
-                                Role.STAFF_VIEWER.getValue())
-                        .build();
-
-        UserDetails services =
-                User.withUsername("services")
-                        .password("{noop}password")
-                        .roles(Role.SERVICES_SUB_TEAM.getValue())
-                        .build();
-
-        UserDetails charlie =
-                User.withUsername("charlie")
-                        .password("{noop}password")
-                        .roles(Role.VICE_PRESIDENT.getValue())
-                        .build();
-
-        UserDetails secretary =
-                User.withUsername("secretary")
-                        .password("{noop}password")
-                        .roles(Role.SECRETARY.getValue(),
-                                Role.EMPLOYEE_VIEWER.getValue())
-                        .build();
-
-        UserDetails client =
-                User.withUsername("client")
-                        .password("{noop}password")
-                        .roles(Role.CLIENT.getValue())
-                        .build();
-
-        return new InMemoryUserDetailsManager(mike, janet, cso, simon, maria, david, emma, alice, jack,
-                production, natalie, services, charlie, secretary, client);
+        return new InMemoryUserDetailsManager(userDetails);
     }
 
     private List<Employee> createEmployees() {
@@ -178,6 +82,85 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         janet.addRole(Role.SENIOR_CUSTOMER_SERVICE_OFFICER);
         janet.addRole(Role.CLIENT_VIEWER);
         employees.add(janet);
+
+        Employee cso = new Employee();
+        cso.setName("CSO");
+        cso.addRole(Role.CUSTOMER_SERVICE_OFFICER);
+        employees.add(cso);
+
+        Employee simon = new Employee();
+        simon.setName("Simon");
+        simon.addRole(Role.SENIOR_HR_MANAGER);
+        simon.addRole(Role.HR_EMPLOYEE);
+        simon.addRole(Role.EMPLOYEE_VIEWER);
+        employees.add(simon);
+
+        Employee maria = new Employee();
+        maria.setName("Maria");
+        maria.addRole(Role.HR_ASSISTANT);
+        maria.addRole(Role.HR_EMPLOYEE);
+        maria.addRole(Role.EMPLOYEE_VIEWER);
+        employees.add(maria);
+
+        Employee david = new Employee();
+        david.setName("David");
+        david.addRole(Role.MARKETING_OFFICER);
+        david.addRole(Role.MARKETING_EMPLOYEE);
+        david.addRole(Role.CLIENT_VIEWER);
+        employees.add(david);
+
+        Employee emma = new Employee();
+        emma.setName("Emma");
+        emma.addRole(Role.MARKETING_ASSISTANT);
+        emma.addRole(Role.MARKETING_EMPLOYEE);
+        emma.addRole(Role.CLIENT_VIEWER);
+        employees.add(emma);
+
+        Employee alice = new Employee();
+        alice.setName("Alice");
+        alice.addRole(Role.FINANCIAL_MANAGER);
+        alice.addRole(Role.ACCOUNTANT);
+        alice.addRole(Role.CLIENT_VIEWER);
+        alice.addRole(Role.EMPLOYEE_VIEWER);
+        employees.add(alice);
+
+        Employee jack = new Employee();
+        jack.setName("Jack");
+        jack.addRole(Role.PRODUCTION_MANAGER);
+        jack.addRole(Role.STAFF_VIEWER);
+        employees.add(jack);
+
+        Employee production = new Employee();
+        production.setName("Production");
+        production.addRole(Role.PRODUCTION_SUB_TEAM);
+        employees.add(production);
+
+        Employee natalie = new Employee();
+        natalie.setName("Natalie");
+        natalie.addRole(Role.SERVICES_MANAGER);
+        natalie.addRole(Role.STAFF_VIEWER);
+        employees.add(natalie);
+
+        Employee services = new Employee();
+        services.setName("Services");
+        services.addRole(Role.SERVICES_SUB_TEAM);
+        employees.add(services);
+
+        Employee charlie = new Employee();
+        charlie.setName("Charlie");
+        charlie.addRole(Role.VICE_PRESIDENT);
+        employees.add(charlie);
+
+        Employee secretary = new Employee();
+        secretary.setName("Secretary");
+        secretary.addRole(Role.SECRETARY);
+        secretary.addRole(Role.EMPLOYEE_VIEWER);
+        employees.add(secretary);
+
+        Employee client = new Employee();
+        client.setName("Client");
+        client.addRole(Role.CLIENT);
+        employees.add(client);
 
         employeeRepository.saveAll(employees);
 
