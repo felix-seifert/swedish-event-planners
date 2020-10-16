@@ -40,13 +40,13 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public Client postClient(Client client) {
         if(client.getId() != null) {
-            throw new EntityAlreadyExistsException("Given client already has id");
+            throw new EntityAlreadyExistsException("Given Client already has id");
         }
 
         checkBlankVariables(client);
 
         Client newClient = clientRepository.save(client);
-        log.info("New client {} created", newClient);
+        log.info("New Client {} created", newClient);
         return newClient;
     }
 

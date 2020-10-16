@@ -69,7 +69,7 @@ public class ClientReposistoryTest {
 
         assertEquals(clientToSave, clientActual);
         assertTrue(clientExists);
-        assertTrue(clientActual.getId() != null);
+        assertNotNull(clientActual.getId());
         assertEquals(3, clientListActual.size());
         assertEquals(clientToSave, clientListActual.get(2));
     }

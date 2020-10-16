@@ -6,6 +6,8 @@ import com.felixseifert.swedisheventplanners.views.cardlist.CardListView;
 import com.felixseifert.swedisheventplanners.views.client.ClientView;
 import com.felixseifert.swedisheventplanners.views.helloworld.HelloWorldView;
 import com.felixseifert.swedisheventplanners.views.masterdetail.MasterDetailView;
+import com.felixseifert.swedisheventplanners.views.newrequest.CreateNewRequestView;
+import com.felixseifert.swedisheventplanners.views.newrequest.NewRequestsGridView;
 import com.felixseifert.swedisheventplanners.views.personform.PersonFormView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentUtil;
@@ -97,6 +99,12 @@ public class MainView extends AppLayout {
 
         final List<Tab> tabs = new ArrayList<>();
 
+        if(SecurityUtils.isAccessGranted(CreateNewRequestView.class)) {
+            tabs.add(createTab("Create New Event Request", CreateNewRequestView.class));
+        }
+        if(SecurityUtils.isAccessGranted(NewRequestsGridView.class)) {
+            tabs.add(createTab("View New Event Requests", NewRequestsGridView.class));
+        }
         tabs.add(createTab("Hello World", HelloWorldView.class));
         tabs.add(createTab("About", AboutView.class));
         if(SecurityUtils.isAccessGranted(MasterDetailView.class)) {

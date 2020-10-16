@@ -137,7 +137,7 @@ public class ClientServiceImplTest {
     }
 
     @Test
-    public void deleteEmployeeTest_IdDoesNotExist() {
+    public void deleteClientTest_IdDoesNotExist() {
         assertThrows(EntityNotFoundException.class, () -> clientServiceImpl.deleteClient(newClient));
     }
 }
