@@ -2,7 +2,7 @@ package com.felixseifert.swedisheventplanners.views.masterdetail;
 
 import com.felixseifert.swedisheventplanners.data.entity.Person;
 import com.felixseifert.swedisheventplanners.data.service.PersonService;
-import com.felixseifert.swedisheventplanners.security.Role;
+import com.felixseifert.swedisheventplanners.model.enums.Role;
 import com.felixseifert.swedisheventplanners.views.main.MainView;
 import com.vaadin.flow.component.AbstractField;
 import com.vaadin.flow.component.button.Button;

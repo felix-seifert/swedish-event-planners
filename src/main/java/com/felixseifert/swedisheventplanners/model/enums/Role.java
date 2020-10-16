@@ -1,4 +1,4 @@
-package com.felixseifert.swedisheventplanners.security;
+package com.felixseifert.swedisheventplanners.model.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -6,30 +6,33 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum Role {
 
-    ADMINISTRATION_MANAGER(ForAnnotation.ADMINISTRATION_MANAGER),
-    CUSTOMER_SERVICE_OFFICER(ForAnnotation.CUSTOMER_SERVICE_OFFICER),
-    SENIOR_CUSTOMER_SERVICE_OFFICER(ForAnnotation.SENIOR_CUSTOMER_SERVICE_OFFICER),
-    SENIOR_HR_MANAGER(ForAnnotation.SENIOR_HR_MANAGER),
-    HR_ASSISTANT(ForAnnotation.HR_ASSISTANT),
-    HR_EMPLOYEE(ForAnnotation.HR_EMPLOYEE),
-    MARKETING_OFFICER(ForAnnotation.MARKETING_OFFICER),
-    MARKETING_ASSISTANT(ForAnnotation.MARKETING_ASSISTANT),
-    MARKETING_EMPLOYEE(ForAnnotation.MARKETING_EMPLOYEE),
-    FINANCIAL_MANAGER(ForAnnotation.FINANCIAL_MANAGER),
-    ACCOUNTANT(ForAnnotation.ACCOUNTANT),
-    PRODUCTION_MANAGER(ForAnnotation.PRODUCTION_MANAGER),
-    PRODUCTION_SUB_TEAM(ForAnnotation.PRODUCTION_SUB_TEAM),
-    SERVICES_MANAGER(ForAnnotation.SERVICES_MANAGER),
-    SERVICES_SUB_TEAM(ForAnnotation.SERVICES_SUB_TEAM),
-    VICE_PRESIDENT(ForAnnotation.VICE_PRESIDENT),
-    SECRETARY(ForAnnotation.SECRETARY),
-    CLIENT_VIEWER(ForAnnotation.CLIENT_VIEWER),
-    EMPLOYEE_VIEWER(ForAnnotation.EMPLOYEE_VIEWER),
-    STAFF_VIEWER(ForAnnotation.STAFF_VIEWER),
-    CLIENT(ForAnnotation.CLIENT);
+    ADMINISTRATION_MANAGER(ForAnnotation.ADMINISTRATION_MANAGER, 1),
+    CUSTOMER_SERVICE_OFFICER(ForAnnotation.CUSTOMER_SERVICE_OFFICER, 2),
+    SENIOR_CUSTOMER_SERVICE_OFFICER(ForAnnotation.SENIOR_CUSTOMER_SERVICE_OFFICER, 3),
+    SENIOR_HR_MANAGER(ForAnnotation.SENIOR_HR_MANAGER, 4),
+    HR_ASSISTANT(ForAnnotation.HR_ASSISTANT,5),
+    HR_EMPLOYEE(ForAnnotation.HR_EMPLOYEE,6),
+    MARKETING_OFFICER(ForAnnotation.MARKETING_OFFICER, 7),
+    MARKETING_ASSISTANT(ForAnnotation.MARKETING_ASSISTANT, 8),
+    MARKETING_EMPLOYEE(ForAnnotation.MARKETING_EMPLOYEE, 9),
+    FINANCIAL_MANAGER(ForAnnotation.FINANCIAL_MANAGER, 10),
+    ACCOUNTANT(ForAnnotation.ACCOUNTANT, 11),
+    PRODUCTION_MANAGER(ForAnnotation.PRODUCTION_MANAGER, 12),
+    PRODUCTION_SUB_TEAM(ForAnnotation.PRODUCTION_SUB_TEAM, 13),
+    SERVICES_MANAGER(ForAnnotation.SERVICES_MANAGER, 14),
+    SERVICES_SUB_TEAM(ForAnnotation.SERVICES_SUB_TEAM, 15),
+    VICE_PRESIDENT(ForAnnotation.VICE_PRESIDENT, 16),
+    SECRETARY(ForAnnotation.SECRETARY, 17),
+    CLIENT_VIEWER(ForAnnotation.CLIENT_VIEWER, 18),
+    EMPLOYEE_VIEWER(ForAnnotation.EMPLOYEE_VIEWER, 19),
+    STAFF_VIEWER(ForAnnotation.STAFF_VIEWER, 20),
+    CLIENT(ForAnnotation.CLIENT, 21 );
 
     @Getter
     private final String value;
+
+    @Getter
+    private final Integer databaseCode;
 
     @Override
     public String toString() {

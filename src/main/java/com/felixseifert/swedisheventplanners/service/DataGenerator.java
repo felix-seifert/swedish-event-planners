@@ -22,7 +22,7 @@ public class DataGenerator {
             }
             long seed = 123L;
 
-            log.info("Generating demo data");
+            log.info("Generating demo clients");
 
             int numberOfClients = 30;
             log.info("... generating {} Person entities...", numberOfClients);
@@ -34,5 +34,4 @@ public class DataGenerator {
             log.info("Generated demo data");
         };
     }
-
 }

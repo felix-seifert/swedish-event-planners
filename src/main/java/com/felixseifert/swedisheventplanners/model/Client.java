@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import java.util.Objects;
 import javax.persistence.Table;
 
 @Entity
