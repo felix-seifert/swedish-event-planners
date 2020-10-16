@@ -105,6 +105,9 @@ public class MainView extends AppLayout {
         if(SecurityUtils.isAccessGranted(NewRequestsGridView.class)) {
             tabs.add(createTab("View New Event Requests", NewRequestsGridView.class));
         }
+        if(SecurityUtils.isAccessGranted(ClientView.class)) {
+            tabs.add(createTab("Clients", ClientView.class));
+        }
         tabs.add(createTab("Hello World", HelloWorldView.class));
         tabs.add(createTab("About", AboutView.class));
         if(SecurityUtils.isAccessGranted(MasterDetailView.class)) {
@@ -112,7 +115,6 @@ public class MainView extends AppLayout {
         }
         tabs.add(createTab("Card List", CardListView.class));
         tabs.add(createTab("Person Form", PersonFormView.class));
-        tabs.add(createTab("Clients", ClientView.class));
 
         return tabs.toArray(new Tab[tabs.size()]);
     }
