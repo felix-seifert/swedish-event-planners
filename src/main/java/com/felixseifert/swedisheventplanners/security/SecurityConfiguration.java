@@ -1,5 +1,9 @@
 package com.felixseifert.swedisheventplanners.security;
 
+import com.felixseifert.swedisheventplanners.model.Employee;
+import com.felixseifert.swedisheventplanners.model.enums.Role;
+import com.felixseifert.swedisheventplanners.repos.EmployeeRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -19,6 +23,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private static final String LOGIN_FAILURE_URL = "/login?error";
     private static final String LOGIN_URL = "/login";
     private static final String LOGOUT_SUCCESS_URL = "/login";
+
+    @Autowired
+    private EmployeeRepository employeeRepository;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -42,17 +49,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         // Do NOT configure users directly in code for applications in production!
 
+        Employee employeeMike = employeeRepository.findByNameIgnoreCase("mike").get(0);
+        Employee employeeJanet = employeeRepository.findByNameIgnoreCase("janet").get(0);
+
         UserDetails mike =
-                User.withUsername("mike")
+                User.withUsername(employeeMike.getName())
                         .password("{noop}password")
-                        .roles(Role.ADMINISTRATION_MANAGER.getValue())
+                        .roles(employeeMike.getRoles().stream().map(Role::getValue).toArray(String[]::new))
                         .build();
 
         UserDetails janet =
-                User.withUsername("janet")
+                User.withUsername(employeeJanet.getName())
                         .password("{noop}password")
-                        .roles(Role.SENIOR_CUSTOMER_SERVICE_OFFICER.getValue(),
-                                Role.CLIENT_VIEWER.getValue())
+                        .roles(employeeJanet.getRoles().stream().map(Role::getValue).toArray(String[]::new))
                         .build();
 
         UserDetails cso =
