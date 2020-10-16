@@ -28,7 +28,7 @@ import com.vaadin.flow.router.Route;
 import org.springframework.security.access.annotation.Secured;
 import org.vaadin.gatanaso.MultiselectComboBox;
 
-@Route(value = "create-new-request", layout = MainView.class)
+@Route(value = "new-requests/create", layout = MainView.class)
 @PageTitle("Create New Request | Swedish Event Planners")
 @Secured({Role.ForAnnotation.CUSTOMER_SERVICE_OFFICER_WITH_PREFIX,
         Role.ForAnnotation.SENIOR_CUSTOMER_SERVICE_OFFICER_WITH_PREFIX})
