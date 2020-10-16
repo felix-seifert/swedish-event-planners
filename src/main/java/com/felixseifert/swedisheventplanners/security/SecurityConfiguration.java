@@ -15,6 +15,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @EnableWebSecurity
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
@@ -49,8 +52,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         // Do NOT configure users directly in code for applications in production!
 
-        Employee employeeMike = employeeRepository.findByNameIgnoreCase("mike").get(0);
-        Employee employeeJanet = employeeRepository.findByNameIgnoreCase("janet").get(0);
+        List<Employee> employeesList = createEmployees();
+
+        Employee employeeMike = employeesList.get(0);
+        Employee employeeJanet = employeesList.get(1);
 
         UserDetails mike =
                 User.withUsername(employeeMike.getName())
@@ -159,6 +164,26 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return new InMemoryUserDetailsManager(mike, janet, cso, simon, maria, david, emma, alice, jack,
                 production, natalie, services, charlie, secretary, client);
     }
+
+    private List<Employee> createEmployees() {
+        List<Employee> employees = new ArrayList<>();
+
+        Employee mike = new Employee();
+        mike.setName("Mike");
+        mike.addRole(Role.ADMINISTRATION_MANAGER);
+        employees.add(mike);
+
+        Employee janet = new Employee();
+        janet.setName("Janet");
+        janet.addRole(Role.SENIOR_CUSTOMER_SERVICE_OFFICER);
+        janet.addRole(Role.CLIENT_VIEWER);
+        employees.add(janet);
+
+        employeeRepository.saveAll(employees);
+
+        return employees;
+    }
+
 
     @Override
     public void configure(WebSecurity web) {
