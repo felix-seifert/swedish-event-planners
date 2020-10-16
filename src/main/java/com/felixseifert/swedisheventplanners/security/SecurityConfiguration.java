@@ -1,8 +1,8 @@
 package com.felixseifert.swedisheventplanners.security;
 
-import com.felixseifert.swedisheventplanners.model.Employee;
-import com.felixseifert.swedisheventplanners.model.enums.Role;
-import com.felixseifert.swedisheventplanners.repos.EmployeeRepository;
+import com.felixseifert.swedisheventplanners.backend.model.Employee;
+import com.felixseifert.swedisheventplanners.backend.model.enums.Role;
+import com.felixseifert.swedisheventplanners.backend.repos.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

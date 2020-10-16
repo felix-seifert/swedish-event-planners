@@ -1,6 +1,6 @@
 package com.felixseifert.swedisheventplanners.security;
 
-import com.felixseifert.swedisheventplanners.views.login.LoginView;
+import com.felixseifert.swedisheventplanners.ui.views.login.LoginView;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.NotFoundException;
