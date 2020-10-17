@@ -42,7 +42,6 @@ public class NewRequest extends AbstractEntity {
     @Convert(converter = PreferencesConverter.class)
     private Set<Preference> preferences = new HashSet<>();
 
-    //Any anotation needed?
     private RequestStatus requestStatus;
 
     public NewRequest() {
