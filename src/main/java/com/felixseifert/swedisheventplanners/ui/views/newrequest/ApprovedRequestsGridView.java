@@ -14,7 +14,6 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.splitlayout.SplitLayout;
 import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.springframework.security.access.annotation.Secured;
@@ -27,8 +26,6 @@ import java.util.stream.Collectors;
 public class ApprovedRequestsGridView extends Div {
 
     private NewRequestService newRequestService;
-
-    private Binder<NewRequest> binder;
 
     private Grid<NewRequest> grid = new Grid<>();
 
@@ -51,9 +48,7 @@ public class ApprovedRequestsGridView extends Div {
         splitLayout.addToSecondary(createEditorLayout());
         splitLayout.addToPrimary(createGridLayout());
 
-        bindFields();
-
-        grid.setItems(newRequestService.getAllNewRequests().stream().filter(r -> r.getRequestStatus()== RequestStatus.APPROVED));
+        grid.setItems(newRequestService.getAllNewRequestsByStatus(RequestStatus.APPROVED));
 
         grid.asSingleSelect().addValueChangeListener(event -> {
             if(event.getValue() != null) {
@@ -68,11 +63,6 @@ public class ApprovedRequestsGridView extends Div {
                 expectedAttendeesTextField.setValue(event.getValue().getExpectedNumberOfAttendees() != null ?
                         event.getValue().getExpectedNumberOfAttendees().toString() : "");
                 expectedBudgetNumberField.setValue(event.getValue().getExpectedBudget());
-
-                NewRequest newRequestFromBackend = newRequestService.getNewRequestById(event.getValue().getId());
-                if (newRequestFromBackend != null) {
-                    binder.setBean(newRequestFromBackend);
-                }
             }
         });
 
@@ -120,26 +110,5 @@ public class ApprovedRequestsGridView extends Div {
         gridLayout.add(grid);
 
         return gridLayout;
-    }
-
-    private void bindFields() {
-        binder = new Binder<>();
-        binder.forField(recordNumberTextField).bind(NewRequest::getRecordNumber,NewRequest::setRecordNumber);
-    }
-
-    private void refreshGrid() {
-        grid.select(null);
-        grid.setItems(newRequestService.getAllNewRequests().stream().filter(r -> r.getRequestStatus()== RequestStatus.APPROVED));
-    }
-
-    private void clearForm() {
-        binder.setBean(null);
-        clientNameTextField.setValue("");
-        eventTypeTextField.setValue("");
-        preferencesTextField.setValue("");
-        fromDateTextField.setValue("");
-        toDateTextField.setValue("");
-        expectedAttendeesTextField.setValue("");
-        expectedBudgetNumberField.setValue(null);
     }
 }
