@@ -7,11 +7,9 @@ import com.felixseifert.swedisheventplanners.backend.model.enums.Role;
 import com.felixseifert.swedisheventplanners.backend.service.NewRequestService;
 import com.felixseifert.swedisheventplanners.ui.views.main.MainView;
 import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.splitlayout.SplitLayout;
 import com.vaadin.flow.component.textfield.NumberField;
@@ -23,10 +21,10 @@ import org.springframework.security.access.annotation.Secured;
 
 import java.util.stream.Collectors;
 
-@Route(value = "new-request", layout = MainView.class)
+@Route(value = "approved-requests", layout = MainView.class)
 @PageTitle("New Event Requests | Swedish Event Planners")
 @Secured(Role.ForAnnotation.SENIOR_CUSTOMER_SERVICE_OFFICER_WITH_PREFIX)
-public class NewRequestsGridView extends Div {
+public class ApprovedRequestsGridView extends Div {
 
     private NewRequestService newRequestService;
 
@@ -43,9 +41,8 @@ public class NewRequestsGridView extends Div {
     private TextField toDateTextField = new TextField("To");
     private TextField expectedAttendeesTextField = new TextField("Expected Number of Attendees");
     private NumberField expectedBudgetNumberField = new NumberField("Expected Budget");
-    private Button approve = new Button();
 
-    public NewRequestsGridView(NewRequestService newRequestService) {
+    public ApprovedRequestsGridView(NewRequestService newRequestService) {
 
         this.newRequestService = newRequestService;
 
@@ -56,7 +53,7 @@ public class NewRequestsGridView extends Div {
 
         bindFields();
 
-        grid.setItems(newRequestService.getAllNewRequests().stream().filter(r -> r.getRequestStatus()== RequestStatus.UNDER_REVIEW_BY_SCSO));
+        grid.setItems(newRequestService.getAllNewRequests().stream().filter(r -> r.getRequestStatus()== RequestStatus.APPROVED));
 
         grid.asSingleSelect().addValueChangeListener(event -> {
             if(event.getValue() != null) {
@@ -77,19 +74,6 @@ public class NewRequestsGridView extends Div {
                     binder.setBean(newRequestFromBackend);
                 }
             }
-        });
-
-        approve.addClickListener(e -> {
-            NewRequest requestToApprove = binder.getBean();
-            if(requestToApprove.getId() == null) {
-                Notification.show("An exception happened while trying to approve the request.");
-                return;
-            }
-            requestToApprove.setRequestStatus(RequestStatus.UNDER_REVIEW_BY_FM);
-            newRequestService.putNewRequest(requestToApprove);
-            clearForm();
-            refreshGrid();
-            Notification.show(String.format("Request %s updated.", requestToApprove.getRecordNumber()));
         });
 
         this.setHeightFull();
@@ -117,10 +101,8 @@ public class NewRequestsGridView extends Div {
         expectedAttendeesTextField.setReadOnly(true);
         expectedBudgetNumberField.setReadOnly(true);
 
-        approve.setText("Approve request");
-
         return new FormLayout(recordNumberTextField, clientNameTextField, eventTypeTextField, preferencesTextField,
-                fromDateTextField, toDateTextField, expectedAttendeesTextField, expectedBudgetNumberField, approve);
+                fromDateTextField, toDateTextField, expectedAttendeesTextField, expectedBudgetNumberField);
     }
 
     private Div createGridLayout() {
@@ -143,12 +125,11 @@ public class NewRequestsGridView extends Div {
     private void bindFields() {
         binder = new Binder<>();
         binder.forField(recordNumberTextField).bind(NewRequest::getRecordNumber,NewRequest::setRecordNumber);
-
     }
 
     private void refreshGrid() {
         grid.select(null);
-        grid.setItems(newRequestService.getAllNewRequests().stream().filter(r -> r.getRequestStatus()== RequestStatus.UNDER_REVIEW_BY_SCSO));
+        grid.setItems(newRequestService.getAllNewRequests().stream().filter(r -> r.getRequestStatus()== RequestStatus.APPROVED));
     }
 
     private void clearForm() {
