@@ -43,7 +43,7 @@ public class NewRequestsFMGridView extends Div {
     private TextField toDateTextField = new TextField("To");
     private TextField expectedAttendeesTextField = new TextField("Expected Number of Attendees");
     private NumberField expectedBudgetNumberField = new NumberField("Expected Budget");
-    private Button approve = new Button();
+    private Button approveButton = new Button();
 
     public NewRequestsFMGridView(NewRequestService newRequestService) {
 
@@ -77,11 +77,11 @@ public class NewRequestsFMGridView extends Div {
                     binder.setBean(newRequestFromBackend);
                 }
 
-                approve.setVisible(true);
+                approveButton.setVisible(true);
             }
         });
 
-        approve.addClickListener(e -> {
+        approveButton.addClickListener(e -> {
             NewRequest requestToApprove = binder.getBean();
             if(requestToApprove.getId() == null) {
                 Notification.show("An exception happened while trying to approve the request.");
@@ -119,11 +119,11 @@ public class NewRequestsFMGridView extends Div {
         expectedAttendeesTextField.setReadOnly(true);
         expectedBudgetNumberField.setReadOnly(true);
 
-        approve.setText("Approve request");
-        approve.setVisible(false);
+        approveButton.setText("Approve request");
+        approveButton.setVisible(false);
 
         return new FormLayout(recordNumberTextField, clientNameTextField, eventTypeTextField, preferencesTextField,
-                fromDateTextField, toDateTextField, expectedAttendeesTextField, expectedBudgetNumberField, approve);
+                fromDateTextField, toDateTextField, expectedAttendeesTextField, expectedBudgetNumberField, approveButton);
     }
 
     private Div createGridLayout() {
@@ -164,6 +164,6 @@ public class NewRequestsFMGridView extends Div {
         expectedAttendeesTextField.setValue("");
         expectedBudgetNumberField.setValue(null);
 
-        approve.setVisible(false);
+        approveButton.setVisible(false);
     }
 }
