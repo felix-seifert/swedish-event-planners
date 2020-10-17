@@ -1,9 +1,6 @@
 package com.felixseifert.swedisheventplanners.backend.model;
 
-import com.felixseifert.swedisheventplanners.backend.model.enums.EventType;
-import com.felixseifert.swedisheventplanners.backend.model.enums.EventTypeConverter;
-import com.felixseifert.swedisheventplanners.backend.model.enums.Preference;
-import com.felixseifert.swedisheventplanners.backend.model.enums.PreferencesConverter;
+import com.felixseifert.swedisheventplanners.backend.model.enums.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -45,6 +42,14 @@ public class NewRequest extends AbstractEntity {
     @Convert(converter = PreferencesConverter.class)
     private Set<Preference> preferences = new HashSet<>();
 
+    //Any anotation needed?
+    private RequestStatus requestStatus;
+
+    public NewRequest() {
+        super();
+        this.requestStatus = RequestStatus.UNDER_REVIEW_BY_SCSO;
+    }
+
     public void addPreference(Preference preference) {
         preferences.add(preference);
     }
@@ -76,6 +81,7 @@ public class NewRequest extends AbstractEntity {
                 ", expectedNumberOfAttendees=" + expectedNumberOfAttendees + '\'' +
                 ", expectedBudget=" + expectedBudget + '\'' +
                 ", preferences=" + preferences +
+                ", status=" + requestStatus +
                 '}';
     }
 }

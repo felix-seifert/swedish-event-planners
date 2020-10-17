@@ -2,17 +2,21 @@ package com.felixseifert.swedisheventplanners.ui.views.newrequest;
 
 import com.felixseifert.swedisheventplanners.backend.model.NewRequest;
 import com.felixseifert.swedisheventplanners.backend.model.enums.Preference;
+import com.felixseifert.swedisheventplanners.backend.model.enums.RequestStatus;
 import com.felixseifert.swedisheventplanners.backend.model.enums.Role;
 import com.felixseifert.swedisheventplanners.backend.service.NewRequestService;
 import com.felixseifert.swedisheventplanners.ui.views.main.MainView;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.splitlayout.SplitLayout;
 import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.springframework.security.access.annotation.Secured;
@@ -23,6 +27,10 @@ import java.util.stream.Collectors;
 @PageTitle("New Event Requests | Swedish Event Planners")
 @Secured(Role.ForAnnotation.SENIOR_CUSTOMER_SERVICE_OFFICER_WITH_PREFIX)
 public class NewRequestsGridView extends Div {
+
+    private NewRequestService newRequestService;
+
+    private Binder<NewRequest> binder;
 
     private Grid<NewRequest> grid = new Grid<>();
 
@@ -35,15 +43,20 @@ public class NewRequestsGridView extends Div {
     private TextField toDateTextField = new TextField("To");
     private TextField expectedAttendeesTextField = new TextField("Expected Number of Attendees");
     private NumberField expectedBudgetNumberField = new NumberField("Expected Budget");
+    private Button approve = new Button();
 
     public NewRequestsGridView(NewRequestService newRequestService) {
+
+        this.newRequestService = newRequestService;
 
         SplitLayout splitLayout = new SplitLayout();
         splitLayout.setSizeFull();
         splitLayout.addToSecondary(createEditorLayout());
         splitLayout.addToPrimary(createGridLayout());
 
-        grid.setItems(newRequestService.getAllNewRequests());
+        bindFields();
+
+        grid.setItems(newRequestService.getAllNewRequests().stream().filter(r -> r.getRequestStatus()== RequestStatus.UNDER_REVIEW_BY_SCSO));
 
         grid.asSingleSelect().addValueChangeListener(event -> {
             if(event.getValue() != null) {
@@ -58,7 +71,25 @@ public class NewRequestsGridView extends Div {
                 expectedAttendeesTextField.setValue(event.getValue().getExpectedNumberOfAttendees() != null ?
                         event.getValue().getExpectedNumberOfAttendees().toString() : "");
                 expectedBudgetNumberField.setValue(event.getValue().getExpectedBudget());
+
+                NewRequest newRequestFromBackend = newRequestService.getNewRequestById(event.getValue().getId());
+                if (newRequestFromBackend != null) {
+                    binder.setBean(newRequestFromBackend);
+                }
             }
+        });
+
+        approve.addClickListener(e -> {
+            NewRequest requestToApprove = binder.getBean();
+            if(requestToApprove.getId() == null) {
+                Notification.show("An exception happened while trying to approve the request.");
+                return;
+            }
+            requestToApprove.setRequestStatus(RequestStatus.UNDER_REVIEW_BY_FM);
+            newRequestService.putNewRequest(requestToApprove);
+            clearForm();
+            refreshGrid();
+            Notification.show(String.format("Request %s updated.", requestToApprove.getRecordNumber()));
         });
 
         this.setHeightFull();
@@ -86,8 +117,10 @@ public class NewRequestsGridView extends Div {
         expectedAttendeesTextField.setReadOnly(true);
         expectedBudgetNumberField.setReadOnly(true);
 
+        approve.setText("Approve request");
+
         return new FormLayout(recordNumberTextField, clientNameTextField, eventTypeTextField, preferencesTextField,
-                fromDateTextField, toDateTextField, expectedAttendeesTextField, expectedBudgetNumberField);
+                fromDateTextField, toDateTextField, expectedAttendeesTextField, expectedBudgetNumberField, approve);
     }
 
     private Div createGridLayout() {
@@ -105,5 +138,27 @@ public class NewRequestsGridView extends Div {
         gridLayout.add(grid);
 
         return gridLayout;
+    }
+
+    private void bindFields() {
+        binder = new Binder<>();
+        binder.forField(recordNumberTextField).bind(NewRequest::getRecordNumber,NewRequest::setRecordNumber);
+
+    }
+
+    private void refreshGrid() {
+        grid.select(null);
+        grid.setItems(newRequestService.getAllNewRequests().stream().filter(r -> r.getRequestStatus()== RequestStatus.UNDER_REVIEW_BY_SCSO));
+    }
+
+    private void clearForm() {
+        binder.setBean(null);
+        clientNameTextField.setValue("");
+        eventTypeTextField.setValue("");
+        preferencesTextField.setValue("");
+        fromDateTextField.setValue("");
+        toDateTextField.setValue("");
+        expectedAttendeesTextField.setValue("");
+        expectedBudgetNumberField.setValue(null);
     }
 }
