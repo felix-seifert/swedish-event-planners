@@ -54,9 +54,9 @@ public class NewRequestsGridView extends Div {
         splitLayout.addToSecondary(createEditorLayout());
         splitLayout.addToPrimary(createGridLayout());
 
-        bindFields();
+        binder = new Binder<>();
 
-        grid.setItems(newRequestService.getAllNewRequests().stream().filter(r -> r.getRequestStatus()== RequestStatus.UNDER_REVIEW_BY_SCSO));
+        grid.setItems(newRequestService.getAllNewRequestsByStatus(RequestStatus.UNDER_REVIEW_BY_SCSO));
 
         grid.asSingleSelect().addValueChangeListener(event -> {
             if(event.getValue() != null) {
@@ -140,19 +140,14 @@ public class NewRequestsGridView extends Div {
         return gridLayout;
     }
 
-    private void bindFields() {
-        binder = new Binder<>();
-        binder.forField(recordNumberTextField).bind(NewRequest::getRecordNumber,NewRequest::setRecordNumber);
-
-    }
-
     private void refreshGrid() {
         grid.select(null);
-        grid.setItems(newRequestService.getAllNewRequests().stream().filter(r -> r.getRequestStatus()== RequestStatus.UNDER_REVIEW_BY_SCSO));
+        grid.setItems(newRequestService.getAllNewRequestsByStatus(RequestStatus.UNDER_REVIEW_BY_SCSO));
     }
 
     private void clearForm() {
         binder.setBean(null);
+        recordNumberTextField.setValue("");
         clientNameTextField.setValue("");
         eventTypeTextField.setValue("");
         preferencesTextField.setValue("");

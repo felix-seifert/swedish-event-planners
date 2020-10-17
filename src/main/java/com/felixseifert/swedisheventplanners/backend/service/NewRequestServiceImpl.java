@@ -4,6 +4,7 @@ import com.felixseifert.swedisheventplanners.backend.exceptions.BlankValueNotAll
 import com.felixseifert.swedisheventplanners.backend.exceptions.EntityAlreadyExistsException;
 import com.felixseifert.swedisheventplanners.backend.exceptions.ValueNotAllowedException;
 import com.felixseifert.swedisheventplanners.backend.model.NewRequest;
+import com.felixseifert.swedisheventplanners.backend.model.enums.RequestStatus;
 import com.felixseifert.swedisheventplanners.backend.repos.NewRequestRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -26,6 +27,13 @@ public class NewRequestServiceImpl implements NewRequestService {
         List<NewRequest> newRequests = newRequestRepository.findAll();
         log.debug("Return {} new requests", newRequests.size());
         return newRequests;
+    }
+
+    @Override
+    public List<NewRequest> getAllNewRequestsByStatus(RequestStatus requestStatus) {
+        List<NewRequest> newRequestsByStatus = newRequestRepository.findAllByRequestStatus(requestStatus);
+        log.debug("Return {} new requests", newRequestsByStatus.size());
+        return newRequestsByStatus;
     }
 
     @Override
