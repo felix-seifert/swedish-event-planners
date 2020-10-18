@@ -32,7 +32,7 @@ public class NewRequestServiceImpl implements NewRequestService {
     @Override
     public List<NewRequest> getAllNewRequestsByStatus(RequestStatus requestStatus) {
         List<NewRequest> newRequestsByStatus = newRequestRepository.findAllByRequestStatus(requestStatus);
-        log.debug("Return {} new requests", newRequestsByStatus.size());
+        log.debug("Return {} new requests with status {}", newRequestsByStatus.size(), requestStatus);
         return newRequestsByStatus;
     }
 

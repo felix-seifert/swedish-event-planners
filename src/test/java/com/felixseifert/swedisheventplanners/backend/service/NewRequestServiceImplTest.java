@@ -7,6 +7,7 @@ import com.felixseifert.swedisheventplanners.backend.model.Client;
 import com.felixseifert.swedisheventplanners.backend.model.NewRequest;
 import com.felixseifert.swedisheventplanners.backend.model.enums.EventType;
 import com.felixseifert.swedisheventplanners.backend.model.enums.Preference;
+import com.felixseifert.swedisheventplanners.backend.model.enums.RequestStatus;
 import com.felixseifert.swedisheventplanners.backend.repos.NewRequestRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -62,6 +63,7 @@ public class NewRequestServiceImplTest {
         newRequest1.setFrom(VALID_START_DATE);
         newRequest1.setTo(VALID_END_DATE);
         newRequest1.addPreference(Preference.PHOTOS_FILMING);
+        newRequest1.setRequestStatus(RequestStatus.UNDER_REVIEW_BY_FM);
         newRequest2 = new NewRequest();
         newRequest2.setId(2L);
         newRequest2.setRecordNumber("FFGGTT1234");
@@ -96,6 +98,15 @@ public class NewRequestServiceImplTest {
     public void getNewRequestByIdTest_noNewRequestFound() {
         when(newRequestRepository.findById(anyLong())).thenReturn(Optional.empty());
         assertThrows(EntityNotFoundException.class, () -> newRequestService.getNewRequestById(anyLong()));
+    }
+
+    @Test
+    public void getNewRequestByRequestStatusTest() {
+        when(newRequestRepository.findAllByRequestStatus(RequestStatus.UNDER_REVIEW_BY_FM))
+                .thenReturn(List.of(newRequest1));
+        List<NewRequest> actualNewRequests = newRequestService
+                .getAllNewRequestsByStatus(RequestStatus.UNDER_REVIEW_BY_FM);
+        assertEquals(List.of(newRequest1), actualNewRequests);
     }
 
     @Test
