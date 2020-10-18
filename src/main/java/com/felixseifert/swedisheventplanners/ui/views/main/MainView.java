@@ -102,16 +102,16 @@ public class MainView extends AppLayout {
             tabs.add(createTab("Create New Event Request", CreateNewRequestView.class));
         }
         if(SecurityUtils.isAccessGranted(NewRequestsSCSOGridView.class)) {
-            tabs.add(createTab("View New Event Requests", NewRequestsSCSOGridView.class));
+            tabs.add(createTab("Event Requests to Review", NewRequestsSCSOGridView.class));
         }
         if(SecurityUtils.isAccessGranted(NewRequestsFMGridView.class)) {
-            tabs.add(createTab("View New Event Requests", NewRequestsFMGridView.class));
+            tabs.add(createTab("Event Requests to Review", NewRequestsFMGridView.class));
         }
         if(SecurityUtils.isAccessGranted(NewRequestsAMGridView.class)) {
-            tabs.add(createTab("View New Event Requests", NewRequestsAMGridView.class));
+            tabs.add(createTab("Event Requests to Review", NewRequestsAMGridView.class));
         }
-        if(SecurityUtils.isAccessGranted(ApprovedRequestsGridView.class)) {
-            tabs.add(createTab("Approved Event Requests", ApprovedRequestsGridView.class));
+        if(SecurityUtils.isAccessGranted(ReviewedRequestsGridView.class)) {
+            tabs.add(createTab("Reviewed Event Requests", ReviewedRequestsGridView.class));
         }
         if(SecurityUtils.isAccessGranted(ClientView.class)) {
             tabs.add(createTab("Clients", ClientView.class));

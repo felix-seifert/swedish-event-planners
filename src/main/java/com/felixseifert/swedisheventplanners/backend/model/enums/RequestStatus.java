@@ -5,10 +5,15 @@ import lombok.Getter;
 
 @AllArgsConstructor
 public enum RequestStatus {
-    UNDER_REVIEW_BY_SCSO("Senior Customer Service Officer revision", 1),
-    UNDER_REVIEW_BY_FM("Financial Manager revision", 2),
-    UNDER_REVIEW_BY_AM("Administration Manager revision", 3),
-    APPROVED("Approved", 4);
+    UNDER_REVIEW_BY_SCSO("SCSO revision", 1),
+    UNDER_REVIEW_BY_FM("FM revision", 2),
+    UNDER_REVIEW_BY_AM("AM revision", 3),
+    APPROVED("Approved", 4),
+    REJECTED_BY_SCSO("Rejected by SCSO", 11),
+    REJECTED_BY_FM("Rejected by FM", 12),
+    REJECTED_BY_AM("Rejected byAM", 13),
+    REJECTION_NOTIFICATION("Closed", 20),
+    MEETING_ARRANGED("Meeting arranged", 30);
 
     @Getter
     private final String status;

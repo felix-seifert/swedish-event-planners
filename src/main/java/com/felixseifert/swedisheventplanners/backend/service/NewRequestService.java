@@ -4,12 +4,13 @@ import com.felixseifert.swedisheventplanners.backend.model.NewRequest;
 import com.felixseifert.swedisheventplanners.backend.model.enums.RequestStatus;
 
 import java.util.List;
+import java.util.Set;
 
 public interface NewRequestService {
 
     List<NewRequest> getAllNewRequests();
 
-    List<NewRequest> getAllNewRequestsByStatus(RequestStatus requestStatus);
+    List<NewRequest> getAllNewRequestsByStatus(Set<RequestStatus> requestStatusSet);
 
     NewRequest getNewRequestById(Long id);
 

@@ -8,11 +8,12 @@ import com.felixseifert.swedisheventplanners.backend.service.NewRequestService;
 import com.felixseifert.swedisheventplanners.ui.views.main.MainView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.splitlayout.SplitLayout;
 import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
@@ -21,6 +22,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.springframework.security.access.annotation.Secured;
 
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Route(value = "new-request-fm", layout = MainView.class)
@@ -44,6 +46,7 @@ public class NewRequestsFMGridView extends Div {
     private TextField expectedAttendeesTextField = new TextField("Expected Number of Attendees");
     private NumberField expectedBudgetNumberField = new NumberField("Expected Budget");
     private Button approveButton = new Button();
+    private Button rejectButton = new Button();
 
     public NewRequestsFMGridView(NewRequestService newRequestService) {
 
@@ -54,7 +57,7 @@ public class NewRequestsFMGridView extends Div {
         splitLayout.addToSecondary(createEditorLayout());
         splitLayout.addToPrimary(createGridLayout());
 
-        grid.setItems(newRequestService.getAllNewRequestsByStatus(RequestStatus.UNDER_REVIEW_BY_FM));
+        grid.setItems(newRequestService.getAllNewRequestsByStatus(Set.of(RequestStatus.UNDER_REVIEW_BY_FM)));
 
         grid.asSingleSelect().addValueChangeListener(event -> {
             if(event.getValue() != null) {
@@ -75,6 +78,7 @@ public class NewRequestsFMGridView extends Div {
                 }
 
                 approveButton.setVisible(true);
+                rejectButton.setVisible(true);
             }
         });
 
@@ -88,7 +92,20 @@ public class NewRequestsFMGridView extends Div {
             newRequestService.putNewRequest(requestToApprove);
             clearForm();
             refreshGrid();
-            Notification.show(String.format("Request %s updated.", requestToApprove.getRecordNumber()));
+            Notification.show(String.format("Request %s approved.", requestToApprove.getRecordNumber()));
+        });
+
+        rejectButton.addClickListener(e -> {
+            NewRequest requestToApprove = binder.getBean();
+            if(requestToApprove.getId() == null) {
+                Notification.show("An exception happened while trying to reject the request.");
+                return;
+            }
+            requestToApprove.setRequestStatus(RequestStatus.REJECTED_BY_FM);
+            newRequestService.putNewRequest(requestToApprove);
+            clearForm();
+            refreshGrid();
+            Notification.show(String.format("Request %s rejected.", requestToApprove.getRecordNumber()));
         });
 
         this.setHeightFull();
@@ -96,10 +113,20 @@ public class NewRequestsFMGridView extends Div {
     }
 
     private Component createEditorLayout() {
-        HorizontalLayout editorLayout = new HorizontalLayout();
+        VerticalLayout editorLayout = new VerticalLayout();
         editorLayout.setId("new-request-viewer");
 
+        approveButton.setText("Approve request");
+        approveButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        approveButton.setVisible(false);
+
+        rejectButton.setText("Reject request");
+        rejectButton.addThemeVariants(ButtonVariant.LUMO_ERROR);
+        rejectButton.setVisible(false);
+
         editorLayout.add(createFormLayout());
+        editorLayout.add(approveButton);
+        editorLayout.add(rejectButton);
 
         return editorLayout;
     }
@@ -116,11 +143,8 @@ public class NewRequestsFMGridView extends Div {
         expectedAttendeesTextField.setReadOnly(true);
         expectedBudgetNumberField.setReadOnly(true);
 
-        approveButton.setText("Approve request");
-        approveButton.setVisible(false);
-
         return new FormLayout(recordNumberTextField, clientNameTextField, eventTypeTextField, preferencesTextField,
-                fromDateTextField, toDateTextField, expectedAttendeesTextField, expectedBudgetNumberField, approveButton);
+                fromDateTextField, toDateTextField, expectedAttendeesTextField, expectedBudgetNumberField);
     }
 
     private Div createGridLayout() {
@@ -142,11 +166,12 @@ public class NewRequestsFMGridView extends Div {
 
     private void refreshGrid() {
         grid.select(null);
-        grid.setItems(newRequestService.getAllNewRequestsByStatus(RequestStatus.UNDER_REVIEW_BY_FM));
+        grid.setItems(newRequestService.getAllNewRequestsByStatus(Set.of(RequestStatus.UNDER_REVIEW_BY_FM)));
     }
 
     private void clearForm() {
         binder.setBean(null);
+        recordNumberTextField.setValue("");
         clientNameTextField.setValue("");
         eventTypeTextField.setValue("");
         preferencesTextField.setValue("");
@@ -156,5 +181,6 @@ public class NewRequestsFMGridView extends Div {
         expectedBudgetNumberField.setValue(null);
 
         approveButton.setVisible(false);
+        rejectButton.setVisible(false);
     }
 }
