@@ -4,6 +4,7 @@ import com.felixseifert.swedisheventplanners.backend.model.Client;
 import com.felixseifert.swedisheventplanners.backend.model.NewRequest;
 import com.felixseifert.swedisheventplanners.backend.model.enums.EventType;
 import com.felixseifert.swedisheventplanners.backend.model.enums.Preference;
+import com.felixseifert.swedisheventplanners.backend.model.enums.RequestStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -46,6 +47,7 @@ public class NewRequestRepositoryTest {
         newRequest1.setFrom(LocalDateTime.now().plusDays(1));
         newRequest1.setTo(LocalDateTime.now().plusDays(2));
         newRequest1.addPreference(Preference.PHOTOS_FILMING);
+        newRequest1.setRequestStatus(RequestStatus.UNDER_REVIEW_BY_FM);
         newRequest2 = new NewRequest();
         newRequest2.setRecordNumber("FFGGTT1234");
         newRequest2.setClient(client);
@@ -76,6 +78,12 @@ public class NewRequestRepositoryTest {
     }
 
     @Test
+    public void findByRequestStatusTest() {
+        List<NewRequest> newRequests = newRequestRepository.findAllByRequestStatus(RequestStatus.UNDER_REVIEW_BY_FM);
+        assertEquals(List.of(newRequest1), newRequests);
+    }
+
+    @Test
     public void saveTest() {
         NewRequest newRequestToSave = new NewRequest();
         newRequestToSave.setRecordNumber("GRHFKLM144");
@@ -93,6 +101,7 @@ public class NewRequestRepositoryTest {
         assertNotNull(newRequestActual.getId());
         assertEquals(3, newRequestListActual.size());
         assertEquals(newRequestToSave, newRequestListActual.get(2));
+        assertEquals(newRequestToSave.getRequestStatus(), RequestStatus.UNDER_REVIEW_BY_SCSO);
     }
 
     @Test
