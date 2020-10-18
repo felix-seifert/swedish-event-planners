@@ -23,14 +23,14 @@ import org.springframework.security.access.annotation.Secured;
 
 import java.util.stream.Collectors;
 
-@Route(value = "new-request", layout = MainView.class)
+@Route(value = "new-request-am", layout = MainView.class)
 @PageTitle("New Event Requests | Swedish Event Planners")
-@Secured(Role.ForAnnotation.SENIOR_CUSTOMER_SERVICE_OFFICER_WITH_PREFIX)
-public class NewRequestsGridView extends Div {
+@Secured(Role.ForAnnotation.ADMINISTRATION_MANAGER_WITH_PREFIX)
+public class NewRequestsAMGridView extends Div {
 
     private NewRequestService newRequestService;
 
-    private Binder<NewRequest> binder = new Binder<>();
+    private Binder<NewRequest> binder;
 
     private Grid<NewRequest> grid = new Grid<>();
 
@@ -45,7 +45,7 @@ public class NewRequestsGridView extends Div {
     private NumberField expectedBudgetNumberField = new NumberField("Expected Budget");
     private Button approveButton = new Button();
 
-    public NewRequestsGridView(NewRequestService newRequestService) {
+    public NewRequestsAMGridView(NewRequestService newRequestService) {
 
         this.newRequestService = newRequestService;
 
@@ -54,7 +54,9 @@ public class NewRequestsGridView extends Div {
         splitLayout.addToSecondary(createEditorLayout());
         splitLayout.addToPrimary(createGridLayout());
 
-        grid.setItems(newRequestService.getAllNewRequestsByStatus(RequestStatus.UNDER_REVIEW_BY_SCSO));
+        binder = new Binder<>();
+
+        grid.setItems(newRequestService.getAllNewRequestsByStatus(RequestStatus.UNDER_REVIEW_BY_AM));
 
         grid.asSingleSelect().addValueChangeListener(event -> {
             if(event.getValue() != null) {
@@ -70,9 +72,12 @@ public class NewRequestsGridView extends Div {
                         event.getValue().getExpectedNumberOfAttendees().toString() : "");
                 expectedBudgetNumberField.setValue(event.getValue().getExpectedBudget());
 
-                if (event.getValue() != null) {
-                    binder.setBean(event.getValue());
+                NewRequest newRequestFromBackend = newRequestService.getNewRequestById(event.getValue().getId());
+                if (newRequestFromBackend != null) {
+                    binder.setBean(newRequestFromBackend);
                 }
+
+                approveButton.setVisible(true);
             }
         });
 
@@ -82,7 +87,7 @@ public class NewRequestsGridView extends Div {
                 Notification.show("An exception happened while trying to approve the request.");
                 return;
             }
-            requestToApprove.setRequestStatus(RequestStatus.UNDER_REVIEW_BY_FM);
+            requestToApprove.setRequestStatus(RequestStatus.APPROVED);
             newRequestService.putNewRequest(requestToApprove);
             clearForm();
             refreshGrid();
@@ -115,6 +120,7 @@ public class NewRequestsGridView extends Div {
         expectedBudgetNumberField.setReadOnly(true);
 
         approveButton.setText("Approve request");
+        approveButton.setVisible(false);
 
         return new FormLayout(recordNumberTextField, clientNameTextField, eventTypeTextField, preferencesTextField,
                 fromDateTextField, toDateTextField, expectedAttendeesTextField, expectedBudgetNumberField, approveButton);
@@ -139,12 +145,11 @@ public class NewRequestsGridView extends Div {
 
     private void refreshGrid() {
         grid.select(null);
-        grid.setItems(newRequestService.getAllNewRequestsByStatus(RequestStatus.UNDER_REVIEW_BY_SCSO));
+        grid.setItems(newRequestService.getAllNewRequestsByStatus(RequestStatus.UNDER_REVIEW_BY_AM));
     }
 
     private void clearForm() {
         binder.setBean(null);
-        recordNumberTextField.setValue("");
         clientNameTextField.setValue("");
         eventTypeTextField.setValue("");
         preferencesTextField.setValue("");
@@ -152,5 +157,7 @@ public class NewRequestsGridView extends Div {
         toDateTextField.setValue("");
         expectedAttendeesTextField.setValue("");
         expectedBudgetNumberField.setValue(null);
+
+        approveButton.setVisible(false);
     }
 }

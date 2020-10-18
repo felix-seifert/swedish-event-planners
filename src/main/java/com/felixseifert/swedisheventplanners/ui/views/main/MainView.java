@@ -6,8 +6,7 @@ import com.felixseifert.swedisheventplanners.ui.views.cardlist.CardListView;
 import com.felixseifert.swedisheventplanners.ui.views.client.ClientView;
 import com.felixseifert.swedisheventplanners.ui.views.helloworld.HelloWorldView;
 import com.felixseifert.swedisheventplanners.ui.views.masterdetail.MasterDetailView;
-import com.felixseifert.swedisheventplanners.ui.views.newrequest.CreateNewRequestView;
-import com.felixseifert.swedisheventplanners.ui.views.newrequest.NewRequestsGridView;
+import com.felixseifert.swedisheventplanners.ui.views.newrequest.*;
 import com.felixseifert.swedisheventplanners.ui.views.personform.PersonFormView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentUtil;
@@ -102,8 +101,17 @@ public class MainView extends AppLayout {
         if(SecurityUtils.isAccessGranted(CreateNewRequestView.class)) {
             tabs.add(createTab("Create New Event Request", CreateNewRequestView.class));
         }
-        if(SecurityUtils.isAccessGranted(NewRequestsGridView.class)) {
-            tabs.add(createTab("View New Event Requests", NewRequestsGridView.class));
+        if(SecurityUtils.isAccessGranted(NewRequestsSCSOGridView.class)) {
+            tabs.add(createTab("View New Event Requests", NewRequestsSCSOGridView.class));
+        }
+        if(SecurityUtils.isAccessGranted(NewRequestsFMGridView.class)) {
+            tabs.add(createTab("View New Event Requests", NewRequestsFMGridView.class));
+        }
+        if(SecurityUtils.isAccessGranted(NewRequestsAMGridView.class)) {
+            tabs.add(createTab("View New Event Requests", NewRequestsAMGridView.class));
+        }
+        if(SecurityUtils.isAccessGranted(ApprovedRequestsGridView.class)) {
+            tabs.add(createTab("Approved Event Requests", ApprovedRequestsGridView.class));
         }
         if(SecurityUtils.isAccessGranted(ClientView.class)) {
             tabs.add(createTab("Clients", ClientView.class));
