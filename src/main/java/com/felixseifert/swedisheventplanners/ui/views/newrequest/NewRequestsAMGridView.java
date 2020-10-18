@@ -30,7 +30,7 @@ public class NewRequestsAMGridView extends Div {
 
     private NewRequestService newRequestService;
 
-    private Binder<NewRequest> binder;
+    private Binder<NewRequest> binder = new Binder<>();
 
     private Grid<NewRequest> grid = new Grid<>();
 
@@ -54,8 +54,6 @@ public class NewRequestsAMGridView extends Div {
         splitLayout.addToSecondary(createEditorLayout());
         splitLayout.addToPrimary(createGridLayout());
 
-        binder = new Binder<>();
-
         grid.setItems(newRequestService.getAllNewRequestsByStatus(RequestStatus.UNDER_REVIEW_BY_AM));
 
         grid.asSingleSelect().addValueChangeListener(event -> {
@@ -72,9 +70,8 @@ public class NewRequestsAMGridView extends Div {
                         event.getValue().getExpectedNumberOfAttendees().toString() : "");
                 expectedBudgetNumberField.setValue(event.getValue().getExpectedBudget());
 
-                NewRequest newRequestFromBackend = newRequestService.getNewRequestById(event.getValue().getId());
-                if (newRequestFromBackend != null) {
-                    binder.setBean(newRequestFromBackend);
+                if (event.getValue() != null) {
+                    binder.setBean(event.getValue());
                 }
 
                 approveButton.setVisible(true);

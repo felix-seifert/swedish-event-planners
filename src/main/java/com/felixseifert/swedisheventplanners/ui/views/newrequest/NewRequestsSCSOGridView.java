@@ -23,14 +23,14 @@ import org.springframework.security.access.annotation.Secured;
 
 import java.util.stream.Collectors;
 
-@Route(value = "new-request-fm", layout = MainView.class)
+@Route(value = "new-request-scso", layout = MainView.class)
 @PageTitle("New Event Requests | Swedish Event Planners")
-@Secured(Role.ForAnnotation.FINANCIAL_MANAGER_WITH_PREFIX)
-public class NewRequestsFMGridView extends Div {
+@Secured(Role.ForAnnotation.SENIOR_CUSTOMER_SERVICE_OFFICER_WITH_PREFIX)
+public class NewRequestsSCSOGridView extends Div {
 
     private NewRequestService newRequestService;
 
-    private Binder<NewRequest> binder = new Binder<>();;
+    private Binder<NewRequest> binder = new Binder<>();
 
     private Grid<NewRequest> grid = new Grid<>();
 
@@ -45,7 +45,7 @@ public class NewRequestsFMGridView extends Div {
     private NumberField expectedBudgetNumberField = new NumberField("Expected Budget");
     private Button approveButton = new Button();
 
-    public NewRequestsFMGridView(NewRequestService newRequestService) {
+    public NewRequestsSCSOGridView(NewRequestService newRequestService) {
 
         this.newRequestService = newRequestService;
 
@@ -54,7 +54,7 @@ public class NewRequestsFMGridView extends Div {
         splitLayout.addToSecondary(createEditorLayout());
         splitLayout.addToPrimary(createGridLayout());
 
-        grid.setItems(newRequestService.getAllNewRequestsByStatus(RequestStatus.UNDER_REVIEW_BY_FM));
+        grid.setItems(newRequestService.getAllNewRequestsByStatus(RequestStatus.UNDER_REVIEW_BY_SCSO));
 
         grid.asSingleSelect().addValueChangeListener(event -> {
             if(event.getValue() != null) {
@@ -84,7 +84,7 @@ public class NewRequestsFMGridView extends Div {
                 Notification.show("An exception happened while trying to approve the request.");
                 return;
             }
-            requestToApprove.setRequestStatus(RequestStatus.UNDER_REVIEW_BY_AM);
+            requestToApprove.setRequestStatus(RequestStatus.UNDER_REVIEW_BY_FM);
             newRequestService.putNewRequest(requestToApprove);
             clearForm();
             refreshGrid();
@@ -142,11 +142,12 @@ public class NewRequestsFMGridView extends Div {
 
     private void refreshGrid() {
         grid.select(null);
-        grid.setItems(newRequestService.getAllNewRequestsByStatus(RequestStatus.UNDER_REVIEW_BY_FM));
+        grid.setItems(newRequestService.getAllNewRequestsByStatus(RequestStatus.UNDER_REVIEW_BY_SCSO));
     }
 
     private void clearForm() {
         binder.setBean(null);
+        recordNumberTextField.setValue("");
         clientNameTextField.setValue("");
         eventTypeTextField.setValue("");
         preferencesTextField.setValue("");
