@@ -1,5 +1,6 @@
 package com.felixseifert.swedisheventplanners.ui.views.newrequest;
 
+import com.felixseifert.swedisheventplanners.backend.model.AbstractEntity;
 import com.felixseifert.swedisheventplanners.backend.model.NewRequest;
 import com.felixseifert.swedisheventplanners.backend.model.enums.Preference;
 import com.felixseifert.swedisheventplanners.backend.model.enums.RequestStatus;
@@ -36,6 +37,8 @@ public class ReviewedRequestsGridView extends Div {
 
     private Grid<NewRequest> grid = new Grid<>();
 
+    private ArrangeMeetingDialog arrangeMeetingDialog;
+
     private TextField recordNumberTextField = new TextField("Record Number");
     private TextField clientNameTextField = new TextField("Client Name");
     private TextField clientContactTextField = new TextField("Client Contact Details");
@@ -46,11 +49,14 @@ public class ReviewedRequestsGridView extends Div {
     private TextField expectedAttendeesTextField = new TextField("Expected Number of Attendees");
     private NumberField expectedBudgetNumberField = new NumberField("Expected Budget");
     private TextField requestStatusTextField = new TextField("Status");
-    private Button customerContactedButton = new Button();
+
+    private Button customerContactedButton = new Button("Client Contacted");
 
     public ReviewedRequestsGridView(NewRequestService newRequestService) {
 
         this.newRequestService = newRequestService;
+
+        arrangeMeetingDialog = new ArrangeMeetingDialog(newRequestService);
 
         SplitLayout splitLayout = new SplitLayout();
         splitLayout.setSizeFull();
@@ -76,43 +82,39 @@ public class ReviewedRequestsGridView extends Div {
                         event.getValue().getExpectedNumberOfAttendees().toString() : "");
                 expectedBudgetNumberField.setValue(event.getValue().getExpectedBudget());
                 requestStatusTextField.setValue(event.getValue().getRequestStatus().getStatus());
-            }
 
-            if (event.getValue() != null) {
                 binder.setBean(event.getValue());
+                customerContactedButton.setEnabled(true);
             }
-
-            customerContactedButton.setVisible(true);
         });
 
-        customerContactedButton.addClickListener(e -> {
-            NewRequest requestToApprove = binder.getBean();
-            if(requestToApprove.getId() == null) {
-                Notification.show("An exception happened while trying to handle the request.");
-                return;
-            }
-            if(requestToApprove.getRequestStatus() == RequestStatus.APPROVED){
-                requestToApprove.setRequestStatus(RequestStatus.MEETING_ARRANGED);
-            } else {
-                requestToApprove.setRequestStatus(RequestStatus.REJECTION_NOTIFICATION);
-            }
-            newRequestService.putNewRequest(requestToApprove);
-            clearForm();
-            refreshGrid();
-            Notification.show(String.format("Request %s archived.", requestToApprove.getRecordNumber()));
-        });
+        customerContactedButton.addClickListener(e -> addButtonListenerBasedOnEvent());
+
+        arrangeMeetingDialog.setArchieveRequestHandler(this::archieveRequestHandler);
 
         this.setHeightFull();
         this.add(splitLayout);
     }
 
+    private void addButtonListenerBasedOnEvent() {
+        NewRequest requestToApprove = binder.getBean();
+        if(requestToApprove.getId() == null) {
+            Notification.show("An exception happened while trying to handle the request.");
+            return;
+        }
+        if(requestToApprove.getRequestStatus() == RequestStatus.APPROVED){
+            arrangeMeetingDialog.open(requestToApprove);
+            return;
+        }
+        requestToApprove.setRequestStatus(RequestStatus.REJECTION_NOTIFICATION);
+        archieveRequestHandler(requestToApprove);
+    }
+
     private Component createEditorLayout() {
         VerticalLayout editorLayout = new VerticalLayout();
         editorLayout.setId("new-request-viewer");
-
-        customerContactedButton.setText("Customer contacted");
         customerContactedButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        customerContactedButton.setVisible(false);
+        customerContactedButton.setEnabled(false);
 
         editorLayout.add(createFormLayout());
         editorLayout.add(customerContactedButton);
@@ -165,16 +167,26 @@ public class ReviewedRequestsGridView extends Div {
 
     private void clearForm() {
         binder.setBean(null);
-        recordNumberTextField.setValue("");
-        clientNameTextField.setValue("");
-        eventTypeTextField.setValue("");
-        preferencesTextField.setValue("");
-        fromDateTextField.setValue("");
-        toDateTextField.setValue("");
-        expectedAttendeesTextField.setValue("");
-        expectedBudgetNumberField.setValue(null);
-        requestStatusTextField.setValue("");
+        recordNumberTextField.clear();
+        clientNameTextField.clear();
+        eventTypeTextField.clear();
+        preferencesTextField.clear();
+        fromDateTextField.clear();
+        toDateTextField.clear();
+        expectedAttendeesTextField.clear();
+        expectedBudgetNumberField.clear();
+        requestStatusTextField.clear();
 
-        customerContactedButton.setVisible(false);
+        customerContactedButton.setEnabled(false);
+    }
+
+    private void archieveRequestHandler(AbstractEntity entity) {
+        if (entity instanceof NewRequest) {
+            NewRequest newRequest = (NewRequest) entity;
+            newRequestService.putNewRequest(newRequest);
+            clearForm();
+            refreshGrid();
+            Notification.show(String.format("Request %s archived.", newRequest.getRecordNumber()));
+        }
     }
 }
