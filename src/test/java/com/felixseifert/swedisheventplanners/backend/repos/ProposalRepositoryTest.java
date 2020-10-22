@@ -45,7 +45,7 @@ public class ProposalRepositoryTest {
         proposal1.setEventType(EventType.CELEBRATION);
         proposal1.setFrom(LocalDateTime.now().plusDays(1));
         proposal1.setTo(LocalDateTime.now().plusDays(2));
-        proposal1.setProposalStatus(ProposalStatus.UNDER_REVIEW_BY_MANAGER);
+        proposal1.setProductionProposalStatus(ProposalStatus.UNDER_REVIEW_BY_MANAGER);
         proposal2 = new Proposal();
         proposal2.setRecordNumber("FFGGTT1234");
         proposal2.setClient(client);
@@ -77,8 +77,20 @@ public class ProposalRepositoryTest {
 
     @Test
     public void findByProposalStatusTest() {
-        List<Proposal> proposals = proposalRepository.findAllByProposalStatus(ProposalStatus.UNDER_REVIEW_BY_MANAGER);
+        List<Proposal> proposals = proposalRepository.findAllByProposalStatus(ProposalStatus.PROCESSING);
         assertEquals(List.of(proposal1), proposals);
+    }
+
+    @Test
+    public void findByProductionProposalStatusTest() {
+        List<Proposal> proposals = proposalRepository.findAllByProductionProposalStatus(ProposalStatus.UNDER_REVIEW_BY_MANAGER);
+        assertEquals(List.of(proposal1), proposals);
+    }
+
+    @Test
+    public void findByServiceProposalStatusTest() {
+        List<Proposal> proposals = proposalRepository.findAllByServiceProposalStatus(ProposalStatus.INITIATED);
+        assertEquals(List.of(proposal1, proposal2), proposals);
     }
 
     @Test

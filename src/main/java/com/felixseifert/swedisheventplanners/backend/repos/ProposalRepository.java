@@ -12,4 +12,8 @@ public interface ProposalRepository extends JpaRepository<Proposal, Long> {
     Optional<Proposal> findById(Long id);
 
     List<Proposal> findAllByProposalStatus(ProposalStatus proposalStatus);
+
+    List<Proposal> findAllByProductionProposalStatus(ProposalStatus productionProposalStatus);
+
+    List<Proposal> findAllByServiceProposalStatus(ProposalStatus serviceProposalStatus);
 }

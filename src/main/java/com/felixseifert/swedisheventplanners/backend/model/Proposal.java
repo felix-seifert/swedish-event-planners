@@ -50,9 +50,15 @@ public class Proposal extends AbstractEntity{
 
     private ProposalStatus proposalStatus;
 
+    private ProposalStatus productionProposalStatus;
+
+    private ProposalStatus serviceProposalStatus;
+
     public Proposal() {
         super();
         this.proposalStatus = ProposalStatus.INITIATED;
+        this.productionProposalStatus = ProposalStatus.INITIATED;
+        this.serviceProposalStatus = ProposalStatus.INITIATED;
     }
 
     @Override
@@ -67,6 +73,26 @@ public class Proposal extends AbstractEntity{
         return 44;
     }
 
+    public void setProductionProposalStatus(ProposalStatus productionProposalStatus) {
+        this.productionProposalStatus = productionProposalStatus;
+        updatedProposalStatus();
+    }
+
+    public void setServiceProposalStatus(ProposalStatus serviceProposalStatus) {
+        this.serviceProposalStatus = serviceProposalStatus;
+        updatedProposalStatus();
+    }
+
+    private void updatedProposalStatus() {
+        if(this.productionProposalStatus == ProposalStatus.INITIATED && this.serviceProposalStatus == ProposalStatus.INITIATED) {
+            this.proposalStatus = ProposalStatus.INITIATED;
+        } else if (this.productionProposalStatus == ProposalStatus.CLOSED && this.serviceProposalStatus == ProposalStatus.CLOSED) {
+            this.proposalStatus = ProposalStatus.CLOSED;
+        } else {
+            this.proposalStatus = ProposalStatus.PROCESSING;
+        }
+    }
+
     @Override
     public String toString() {
         return "Proposal{" +
@@ -78,6 +104,8 @@ public class Proposal extends AbstractEntity{
                 ", expectedNumberOfAttendees=" + expectedNumberOfAttendees + '\'' +
                 ", expectedBudget=" + expectedBudget + '\'' +
                 ", status=" + proposalStatus +
+                ", productionStatus=" + productionProposalStatus +
+                ", serviceStatus=" + serviceProposalStatus +
                 '}';
     }
 }

@@ -9,6 +9,8 @@ import com.felixseifert.swedisheventplanners.ui.views.masterdetail.MasterDetailV
 import com.felixseifert.swedisheventplanners.ui.views.newrequest.CreateNewRequestView;
 import com.felixseifert.swedisheventplanners.ui.views.newrequest.NewRequestsGridView;
 import com.felixseifert.swedisheventplanners.ui.views.personform.PersonFormView;
+import com.felixseifert.swedisheventplanners.ui.views.proposal.CreateProposalView;
+import com.felixseifert.swedisheventplanners.ui.views.proposal.ProposalsGridView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentUtil;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -102,8 +104,14 @@ public class MainView extends AppLayout {
         if(SecurityUtils.isAccessGranted(CreateNewRequestView.class)) {
             tabs.add(createTab("Create New Event Request", CreateNewRequestView.class));
         }
+        if(SecurityUtils.isAccessGranted(CreateProposalView.class)) {
+            tabs.add(createTab("Create Proposal", CreateProposalView.class));
+        }
         if(SecurityUtils.isAccessGranted(NewRequestsGridView.class)) {
             tabs.add(createTab("View New Event Requests", NewRequestsGridView.class));
+        }
+        if(SecurityUtils.isAccessGranted(ProposalsGridView.class)) {
+            tabs.add(createTab("Proposals", ProposalsGridView.class));
         }
         if(SecurityUtils.isAccessGranted(ClientView.class)) {
             tabs.add(createTab("Clients", ClientView.class));

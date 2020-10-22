@@ -37,6 +37,20 @@ public class ProposalServiceImpl implements ProposalService {
     }
 
     @Override
+    public List<Proposal> getAllProposalsByProductionStatus(ProposalStatus productionProposalStatus) {
+        List<Proposal> proposalsByStatus = proposalRepository.findAllByProductionProposalStatus(productionProposalStatus);
+        log.debug("Return {} proposals with status {}", proposalsByStatus.size(), productionProposalStatus);
+        return proposalsByStatus;
+    }
+
+    @Override
+    public List<Proposal> getAllProposalsByServiceStatus(ProposalStatus serviceProposalStatus) {
+        List<Proposal> proposalsByStatus = proposalRepository.findAllByServiceProposalStatus(serviceProposalStatus);
+        log.debug("Return {} proposals with status {}", proposalsByStatus.size(), serviceProposalStatus);
+        return proposalsByStatus;
+    }
+
+    @Override
     public Proposal getProposalById(Long id) {
         Optional<Proposal> proposal = proposalRepository.findById(id);
         if(proposal.isEmpty()) {

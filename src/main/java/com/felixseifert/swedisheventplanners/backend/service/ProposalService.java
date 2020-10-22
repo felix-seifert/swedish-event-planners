@@ -11,6 +11,10 @@ public interface ProposalService {
 
     List<Proposal> getAllProposalsByStatus(ProposalStatus proposalStatus);
 
+    List<Proposal> getAllProposalsByProductionStatus(ProposalStatus productionProposalStatus);
+
+    List<Proposal> getAllProposalsByServiceStatus(ProposalStatus serviceProposalStatus);
+
     Proposal getProposalById(Long id);
 
     Proposal postProposal(Proposal proposal);

@@ -61,7 +61,7 @@ public class ProposalServiceImplTest {
         proposal1.setEventType(EventType.CELEBRATION);
         proposal1.setFrom(VALID_START_DATE);
         proposal1.setTo(VALID_END_DATE);
-        proposal1.setProposalStatus(ProposalStatus.UNDER_REVIEW_BY_MANAGER);
+        proposal1.setProductionProposalStatus(ProposalStatus.UNDER_REVIEW_BY_MANAGER);
         proposal2 = new Proposal();
         proposal2.setId(2L);
         proposal2.setRecordNumber("FFGGTT1234");
@@ -100,11 +100,29 @@ public class ProposalServiceImplTest {
 
     @Test
     public void getProposalsByProposalStatusTest() {
-        when(proposalRepository.findAllByProposalStatus(ProposalStatus.UNDER_REVIEW_BY_MANAGER))
+        when(proposalRepository.findAllByProposalStatus(ProposalStatus.PROCESSING))
                 .thenReturn(List.of(proposal1));
         List<Proposal> actualProposals = proposalService
-                .getAllProposalsByStatus(ProposalStatus.UNDER_REVIEW_BY_MANAGER);
+                .getAllProposalsByStatus(ProposalStatus.PROCESSING);
         assertEquals(List.of(proposal1), actualProposals);
+    }
+
+    @Test
+    public void getProposalsByProductionProposalStatusTest() {
+        when(proposalRepository.findAllByProductionProposalStatus(ProposalStatus.UNDER_REVIEW_BY_MANAGER))
+                .thenReturn(List.of(proposal1));
+        List<Proposal> actualProposals = proposalService
+                .getAllProposalsByProductionStatus(ProposalStatus.UNDER_REVIEW_BY_MANAGER);
+        assertEquals(List.of(proposal1), actualProposals);
+    }
+
+    @Test
+    public void getProposalsByServiceProposalStatusTest() {
+        when(proposalRepository.findAllByServiceProposalStatus(ProposalStatus.INITIATED))
+                .thenReturn(List.of(proposal1, proposal2));
+        List<Proposal> actualProposals = proposalService
+                .getAllProposalsByServiceStatus(ProposalStatus.INITIATED);
+        assertEquals(List.of(proposal1, proposal2), actualProposals);
     }
 
     @Test
