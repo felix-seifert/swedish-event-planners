@@ -20,6 +20,7 @@ import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -100,28 +101,28 @@ public class ProposalServiceImplTest {
 
     @Test
     public void getProposalsByProposalStatusTest() {
-        when(proposalRepository.findAllByProposalStatus(ProposalStatus.PROCESSING))
+        when(proposalRepository.findAllByProposalStatusIn(Set.of(ProposalStatus.PROCESSING)))
                 .thenReturn(List.of(proposal1));
         List<Proposal> actualProposals = proposalService
-                .getAllProposalsByStatus(ProposalStatus.PROCESSING);
+                .getAllProposalsByStatus(Set.of(ProposalStatus.PROCESSING));
         assertEquals(List.of(proposal1), actualProposals);
     }
 
     @Test
     public void getProposalsByProductionProposalStatusTest() {
-        when(proposalRepository.findAllByProductionProposalStatus(ProposalStatus.UNDER_REVIEW_BY_MANAGER))
+        when(proposalRepository.findAllByProductionProposalStatusIn(Set.of(ProposalStatus.UNDER_REVIEW_BY_MANAGER)))
                 .thenReturn(List.of(proposal1));
         List<Proposal> actualProposals = proposalService
-                .getAllProposalsByProductionStatus(ProposalStatus.UNDER_REVIEW_BY_MANAGER);
+                .getAllProposalsByProductionStatus(Set.of(ProposalStatus.UNDER_REVIEW_BY_MANAGER));
         assertEquals(List.of(proposal1), actualProposals);
     }
 
     @Test
     public void getProposalsByServiceProposalStatusTest() {
-        when(proposalRepository.findAllByServiceProposalStatus(ProposalStatus.INITIATED))
+        when(proposalRepository.findAllByServiceProposalStatusIn(Set.of(ProposalStatus.INITIATED)))
                 .thenReturn(List.of(proposal1, proposal2));
         List<Proposal> actualProposals = proposalService
-                .getAllProposalsByServiceStatus(ProposalStatus.INITIATED);
+                .getAllProposalsByServiceStatus(Set.of(ProposalStatus.INITIATED));
         assertEquals(List.of(proposal1, proposal2), actualProposals);
     }
 

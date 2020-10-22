@@ -6,6 +6,7 @@ import com.felixseifert.swedisheventplanners.backend.model.enums.Role;
 import com.felixseifert.swedisheventplanners.backend.service.ProposalService;
 import com.felixseifert.swedisheventplanners.ui.views.main.MainView;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
@@ -22,11 +23,10 @@ import org.springframework.security.access.annotation.Secured;
 
 import java.util.Set;
 
-@Route(value = "proposals", layout = MainView.class)
-@PageTitle("Proposals | Swedish Event Planners")
-@Secured({Role.ForAnnotation.PRODUCTION_MANAGER_WITH_PREFIX,
-            Role.ForAnnotation.SERVICES_MANAGER_WITH_PREFIX})
-public class ProposalsGridView extends Div {
+@Route(value = "manager-proposals", layout = MainView.class)
+@PageTitle("Your proposals | Swedish Event Planners")
+@Secured({Role.ForAnnotation.PRODUCTION_MANAGER_WITH_PREFIX})
+public class ProductionManagerProposalsGridView extends Div {
 
     private ProposalService proposalService;
 
@@ -51,7 +51,12 @@ public class ProposalsGridView extends Div {
     private TextArea musicTextArea = new TextArea("Music");
     private TextArea computerRelatedIssuesTextArea = new TextArea("Computer-Related Issues");
 
-    public ProposalsGridView(ProposalService proposalService) {
+    private Button toSubTeamButton = new Button("Forward to sub-teams");
+    private Button extraStaffButton = new Button("Request extra staff");
+    private Button readyButton = new Button("Ready");
+    private Button extraBudgetButton = new Button("Request extra budget");
+
+    public ProductionManagerProposalsGridView(ProposalService proposalService) {
 
         this.proposalService = proposalService;
 

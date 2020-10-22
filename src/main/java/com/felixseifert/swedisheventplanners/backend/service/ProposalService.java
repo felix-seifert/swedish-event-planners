@@ -4,16 +4,17 @@ import com.felixseifert.swedisheventplanners.backend.model.Proposal;
 import com.felixseifert.swedisheventplanners.backend.model.enums.ProposalStatus;
 
 import java.util.List;
+import java.util.Set;
 
 public interface ProposalService {
 
     List<Proposal> getAllProposals();
 
-    List<Proposal> getAllProposalsByStatus(ProposalStatus proposalStatus);
+    List<Proposal> getAllProposalsByStatus(Set<ProposalStatus> proposalStatus);
 
-    List<Proposal> getAllProposalsByProductionStatus(ProposalStatus productionProposalStatus);
+    List<Proposal> getAllProposalsByProductionStatus(Set<ProposalStatus> productionProposalStatus);
 
-    List<Proposal> getAllProposalsByServiceStatus(ProposalStatus serviceProposalStatus);
+    List<Proposal> getAllProposalsByServiceStatus(Set<ProposalStatus> serviceProposalStatus);
 
     Proposal getProposalById(Long id);
 

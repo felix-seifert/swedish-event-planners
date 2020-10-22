@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @Slf4j
@@ -30,23 +31,23 @@ public class ProposalServiceImpl implements ProposalService {
     }
 
     @Override
-    public List<Proposal> getAllProposalsByStatus(ProposalStatus proposalStatus) {
-        List<Proposal> proposalsByStatus = proposalRepository.findAllByProposalStatus(proposalStatus);
-        log.debug("Return {} proposals with status {}", proposalsByStatus.size(), proposalStatus);
+    public List<Proposal> getAllProposalsByStatus(Set<ProposalStatus> proposalStatusSet) {
+        List<Proposal> proposalsByStatus = proposalRepository.findAllByProposalStatusIn(proposalStatusSet);
+        log.debug("Return {} proposals with status {}", proposalsByStatus.size(), proposalStatusSet);
         return proposalsByStatus;
     }
 
     @Override
-    public List<Proposal> getAllProposalsByProductionStatus(ProposalStatus productionProposalStatus) {
-        List<Proposal> proposalsByStatus = proposalRepository.findAllByProductionProposalStatus(productionProposalStatus);
-        log.debug("Return {} proposals with status {}", proposalsByStatus.size(), productionProposalStatus);
+    public List<Proposal> getAllProposalsByProductionStatus(Set<ProposalStatus> productionProposalStatusSet) {
+        List<Proposal> proposalsByStatus = proposalRepository.findAllByProductionProposalStatusIn(productionProposalStatusSet);
+        log.debug("Return {} proposals with status {}", proposalsByStatus.size(), productionProposalStatusSet);
         return proposalsByStatus;
     }
 
     @Override
-    public List<Proposal> getAllProposalsByServiceStatus(ProposalStatus serviceProposalStatus) {
-        List<Proposal> proposalsByStatus = proposalRepository.findAllByServiceProposalStatus(serviceProposalStatus);
-        log.debug("Return {} proposals with status {}", proposalsByStatus.size(), serviceProposalStatus);
+    public List<Proposal> getAllProposalsByServiceStatus(Set<ProposalStatus> serviceProposalStatusSet) {
+        List<Proposal> proposalsByStatus = proposalRepository.findAllByServiceProposalStatusIn(serviceProposalStatusSet);
+        log.debug("Return {} proposals with status {}", proposalsByStatus.size(), serviceProposalStatusSet);
         return proposalsByStatus;
     }
 

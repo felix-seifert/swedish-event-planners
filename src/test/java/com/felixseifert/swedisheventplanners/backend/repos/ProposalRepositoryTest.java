@@ -15,6 +15,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -77,19 +78,19 @@ public class ProposalRepositoryTest {
 
     @Test
     public void findByProposalStatusTest() {
-        List<Proposal> proposals = proposalRepository.findAllByProposalStatus(ProposalStatus.PROCESSING);
+        List<Proposal> proposals = proposalRepository.findAllByProposalStatusIn(Set.of(ProposalStatus.PROCESSING));
         assertEquals(List.of(proposal1), proposals);
     }
 
     @Test
     public void findByProductionProposalStatusTest() {
-        List<Proposal> proposals = proposalRepository.findAllByProductionProposalStatus(ProposalStatus.UNDER_REVIEW_BY_MANAGER);
+        List<Proposal> proposals = proposalRepository.findAllByProductionProposalStatusIn(Set.of(ProposalStatus.UNDER_REVIEW_BY_MANAGER));
         assertEquals(List.of(proposal1), proposals);
     }
 
     @Test
     public void findByServiceProposalStatusTest() {
-        List<Proposal> proposals = proposalRepository.findAllByServiceProposalStatus(ProposalStatus.INITIATED);
+        List<Proposal> proposals = proposalRepository.findAllByServiceProposalStatusIn(Set.of(ProposalStatus.INITIATED));
         assertEquals(List.of(proposal1, proposal2), proposals);
     }
 

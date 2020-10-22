@@ -6,14 +6,15 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface ProposalRepository extends JpaRepository<Proposal, Long> {
 
     Optional<Proposal> findById(Long id);
 
-    List<Proposal> findAllByProposalStatus(ProposalStatus proposalStatus);
+    List<Proposal> findAllByProposalStatusIn(Set<ProposalStatus> proposalStatusSet);
 
-    List<Proposal> findAllByProductionProposalStatus(ProposalStatus productionProposalStatus);
+    List<Proposal> findAllByProductionProposalStatusIn(Set<ProposalStatus> productionProposalStatusSet);
 
-    List<Proposal> findAllByServiceProposalStatus(ProposalStatus serviceProposalStatus);
+    List<Proposal> findAllByServiceProposalStatusIn(Set<ProposalStatus> serviceProposalStatusSet);
 }
