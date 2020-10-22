@@ -3,6 +3,7 @@ package com.felixseifert.swedisheventplanners.backend.model;
 import com.felixseifert.swedisheventplanners.backend.model.enums.EventType;
 import com.felixseifert.swedisheventplanners.backend.model.enums.EventTypeConverter;
 import com.felixseifert.swedisheventplanners.backend.model.enums.ProposalStatus;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -48,6 +49,8 @@ public class Proposal extends AbstractEntity{
 
     private String computerRelatedIssues;
 
+    @Transient
+    @Setter(AccessLevel.NONE)
     private ProposalStatus proposalStatus;
 
     private ProposalStatus productionProposalStatus;
@@ -55,10 +58,21 @@ public class Proposal extends AbstractEntity{
     private ProposalStatus serviceProposalStatus;
 
     public Proposal() {
-        super();
         this.proposalStatus = ProposalStatus.INITIATED;
         this.productionProposalStatus = ProposalStatus.INITIATED;
         this.serviceProposalStatus = ProposalStatus.INITIATED;
+    }
+
+    public ProposalStatus getProposalStatus() {
+        if(ProposalStatus.INITIATED.equals(productionProposalStatus)
+                && ProposalStatus.INITIATED.equals(serviceProposalStatus)) {
+            return ProposalStatus.INITIATED;
+        }
+        if(ProposalStatus.CLOSED.equals(productionProposalStatus)
+                && ProposalStatus.CLOSED.equals(serviceProposalStatus)) {
+            return ProposalStatus.CLOSED;
+        }
+        return ProposalStatus.PROCESSING;
     }
 
     @Override
@@ -71,26 +85,6 @@ public class Proposal extends AbstractEntity{
     @Override
     public int hashCode() {
         return 44;
-    }
-
-    public void setProductionProposalStatus(ProposalStatus productionProposalStatus) {
-        this.productionProposalStatus = productionProposalStatus;
-        updatedProposalStatus();
-    }
-
-    public void setServiceProposalStatus(ProposalStatus serviceProposalStatus) {
-        this.serviceProposalStatus = serviceProposalStatus;
-        updatedProposalStatus();
-    }
-
-    private void updatedProposalStatus() {
-        if(this.productionProposalStatus == ProposalStatus.INITIATED && this.serviceProposalStatus == ProposalStatus.INITIATED) {
-            this.proposalStatus = ProposalStatus.INITIATED;
-        } else if (this.productionProposalStatus == ProposalStatus.CLOSED && this.serviceProposalStatus == ProposalStatus.CLOSED) {
-            this.proposalStatus = ProposalStatus.CLOSED;
-        } else {
-            this.proposalStatus = ProposalStatus.PROCESSING;
-        }
     }
 
     @Override

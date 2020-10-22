@@ -8,11 +8,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-public interface ProposalRepository extends JpaRepository<Proposal, Long> {
+public interface ProposalRepository extends JpaRepository<Proposal, Long>, ProposalRepositoryCustom {
 
     Optional<Proposal> findById(Long id);
-
-    List<Proposal> findAllByProposalStatusIn(Set<ProposalStatus> proposalStatusSet);
 
     List<Proposal> findAllByProductionProposalStatusIn(Set<ProposalStatus> productionProposalStatusSet);
 
