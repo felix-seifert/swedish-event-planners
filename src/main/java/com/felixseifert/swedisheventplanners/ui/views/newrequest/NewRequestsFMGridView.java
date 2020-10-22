@@ -171,14 +171,14 @@ public class NewRequestsFMGridView extends Div {
 
     private void clearForm() {
         binder.setBean(null);
-        recordNumberTextField.setValue("");
-        clientNameTextField.setValue("");
-        eventTypeTextField.setValue("");
-        preferencesTextField.setValue("");
-        fromDateTextField.setValue("");
-        toDateTextField.setValue("");
-        expectedAttendeesTextField.setValue("");
-        expectedBudgetNumberField.setValue(null);
+        recordNumberTextField.clear();
+        clientNameTextField.clear();
+        eventTypeTextField.clear();
+        preferencesTextField.clear();
+        fromDateTextField.clear();
+        toDateTextField.clear();
+        expectedAttendeesTextField.clear();
+        expectedBudgetNumberField.clear();
 
         approveButton.setVisible(false);
         rejectButton.setVisible(false);
