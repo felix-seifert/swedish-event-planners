@@ -11,7 +11,7 @@ public enum RequestStatus {
     APPROVED("Approved", 4),
     REJECTED_BY_SCSO("Rejected by SCSO", 11),
     REJECTED_BY_FM("Rejected by FM", 12),
-    REJECTED_BY_AM("Rejected byAM", 13),
+    REJECTED_BY_AM("Rejected by AM", 13),
     REJECTION_NOTIFICATION("Closed", 20),
     MEETING_ARRANGED("Meeting arranged", 30);
 
