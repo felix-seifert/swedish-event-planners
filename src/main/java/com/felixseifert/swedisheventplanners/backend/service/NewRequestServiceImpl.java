@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @Slf4j
@@ -30,9 +31,9 @@ public class NewRequestServiceImpl implements NewRequestService {
     }
 
     @Override
-    public List<NewRequest> getAllNewRequestsByStatus(RequestStatus requestStatus) {
-        List<NewRequest> newRequestsByStatus = newRequestRepository.findAllByRequestStatus(requestStatus);
-        log.debug("Return {} new requests with status {}", newRequestsByStatus.size(), requestStatus);
+    public List<NewRequest> getAllNewRequestsByStatus(Set<RequestStatus> requestStatusSet) {
+        List<NewRequest> newRequestsByStatus = newRequestRepository.findByRequestStatusIn(requestStatusSet);
+        log.debug("Return {} new requests with status in {}", newRequestsByStatus.size(), requestStatusSet);
         return newRequestsByStatus;
     }
 

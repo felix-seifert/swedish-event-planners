@@ -44,6 +44,8 @@ public class NewRequest extends AbstractEntity {
 
     private RequestStatus requestStatus;
 
+    private LocalDateTime meetingDate;
+
     public NewRequest() {
         super();
         this.requestStatus = RequestStatus.UNDER_REVIEW_BY_SCSO;
@@ -79,8 +81,9 @@ public class NewRequest extends AbstractEntity {
                 ", to=" + to + '\'' +
                 ", expectedNumberOfAttendees=" + expectedNumberOfAttendees + '\'' +
                 ", expectedBudget=" + expectedBudget + '\'' +
-                ", preferences=" + preferences +
-                ", status=" + requestStatus +
+                ", preferences=" + preferences + '\'' +
+                ", status=" + requestStatus + '\'' +
+                ", meetingDate=" + meetingDate +
                 '}';
     }
 }
