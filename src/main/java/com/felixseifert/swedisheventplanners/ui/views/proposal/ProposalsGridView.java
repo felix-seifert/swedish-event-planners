@@ -49,7 +49,7 @@ public class ProposalsGridView extends Div {
     private TextArea postersArtWorkTextArea = new TextArea("Posters/Art Work");
     private TextArea foodDrinksTextArea = new TextArea("Food/Drinks");
     private TextArea musicTextArea = new TextArea("Music");
-    private TextArea computerRelatedIssuesTextArea = new TextArea("Computer-Related Issues");
+    private TextArea computerRelatedIssuesTextArea = new TextArea("Computer-related Issues");
 
     public ProposalsGridView(ProposalService proposalService) {
 
@@ -83,9 +83,7 @@ public class ProposalsGridView extends Div {
                 musicTextArea.setValue(event.getValue().getMusic());
                 computerRelatedIssuesTextArea.setValue(event.getValue().getComputerRelatedIssues());
 
-                if (event.getValue() != null) {
-                    binder.setBean(event.getValue());
-                }
+                binder.setBean(event.getValue());
             }
         });
 

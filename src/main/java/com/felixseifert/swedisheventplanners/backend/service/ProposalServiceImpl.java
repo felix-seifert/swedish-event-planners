@@ -39,14 +39,16 @@ public class ProposalServiceImpl implements ProposalService {
 
     @Override
     public List<Proposal> getAllProposalsByProductionStatus(Set<ProposalStatus> productionProposalStatusSet) {
-        List<Proposal> proposalsByStatus = proposalRepository.findAllByProductionProposalStatusIn(productionProposalStatusSet);
+        List<Proposal> proposalsByStatus =
+                proposalRepository.findAllByProductionProposalStatusIn(productionProposalStatusSet);
         log.debug("Return {} proposals with status {}", proposalsByStatus.size(), productionProposalStatusSet);
         return proposalsByStatus;
     }
 
     @Override
     public List<Proposal> getAllProposalsByServiceStatus(Set<ProposalStatus> serviceProposalStatusSet) {
-        List<Proposal> proposalsByStatus = proposalRepository.findAllByServiceProposalStatusIn(serviceProposalStatusSet);
+        List<Proposal> proposalsByStatus =
+                proposalRepository.findAllByServiceProposalStatusIn(serviceProposalStatusSet);
         log.debug("Return {} proposals with status {}", proposalsByStatus.size(), serviceProposalStatusSet);
         return proposalsByStatus;
     }
@@ -57,12 +59,13 @@ public class ProposalServiceImpl implements ProposalService {
         if(proposal.isEmpty()) {
             throw new EntityNotFoundException("Proposal with id " + id + " does not exist");
         }
-        log.debug("Return newRequest {}", proposal.get());
+        log.debug("Return proposal {}", proposal.get());
         return proposal.get();
     }
 
     @Override
     public Proposal postProposal(Proposal proposal) {
+
         if(proposal.getId() != null) {
             throw new EntityAlreadyExistsException("Given Proposal already has id");
         }
@@ -76,6 +79,7 @@ public class ProposalServiceImpl implements ProposalService {
 
     @Override
     public Proposal putProposal(Proposal proposal) {
+
         if(proposal.getId() == null) {
             throw new EntityNotFoundException("Proposal does not have id");
         }
@@ -89,6 +93,7 @@ public class ProposalServiceImpl implements ProposalService {
 
     @Override
     public void deleteProposal(Proposal proposal) {
+
         if(proposal.getId() == null) {
             throw new EntityNotFoundException("Proposal does not have id");
         }
@@ -100,26 +105,26 @@ public class ProposalServiceImpl implements ProposalService {
     private void checkIllegalVariables(Proposal proposal) {
 
         if(StringUtils.isBlank(proposal.getRecordNumber())) {
-            throw new BlankValueNotAllowedException("NewRequest's recordNumber is blank");
+            throw new BlankValueNotAllowedException("Proposal's recordNumber is blank");
         }
         if(proposal.getClient() == null) {
-            throw new BlankValueNotAllowedException("NewRequest does not have a Client");
+            throw new BlankValueNotAllowedException("Proposal does not have a Client");
         }
         if(proposal.getEventType() == null) {
-            throw new BlankValueNotAllowedException("NewRequest does not have an EventType");
+            throw new BlankValueNotAllowedException("Proposal does not have an EventType");
         }
         if(proposal.getFrom() == null) {
-            throw new BlankValueNotAllowedException("NewRequest does not have a start DateTime");
+            throw new BlankValueNotAllowedException("Proposal does not have a start DateTime");
         }
         if(proposal.getTo() == null) {
-            throw new BlankValueNotAllowedException("NewRequest does not have an end DateTime");
+            throw new BlankValueNotAllowedException("Proposal does not have an end DateTime");
         }
 
         if(proposal.getRecordNumber().length() != 10) {
-            throw new ValueNotAllowedException("NewRequest's recordNumber is not ten digits long");
+            throw new ValueNotAllowedException("Proposal's recordNumber is not ten digits long");
         }
         if(!proposal.getTo().isAfter(proposal.getFrom())) {
-            throw new ValueNotAllowedException("NewRequest's start data cannot be after its end date");
+            throw new ValueNotAllowedException("Proposal's start data cannot be after its end date");
         }
     }
 }

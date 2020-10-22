@@ -5,6 +5,7 @@ import com.felixseifert.swedisheventplanners.backend.model.enums.ProposalStatus;
 import com.felixseifert.swedisheventplanners.backend.model.enums.Role;
 import com.felixseifert.swedisheventplanners.backend.service.ProposalService;
 import com.felixseifert.swedisheventplanners.ui.views.main.MainView;
+import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -25,7 +26,7 @@ import org.springframework.security.access.annotation.Secured;
 
 import java.util.Set;
 
-@Route(value = "manager-proposals", layout = MainView.class)
+@Route(value = "proposals/production-manager", layout = MainView.class)
 @PageTitle("Your proposals | Swedish Event Planners")
 @Secured({Role.ForAnnotation.PRODUCTION_MANAGER_WITH_PREFIX})
 public class ProductionManagerProposalsGridView extends Div {
@@ -51,7 +52,7 @@ public class ProductionManagerProposalsGridView extends Div {
     private TextArea postersArtWorkTextArea = new TextArea("Posters/Art Work");
     private TextArea foodDrinksTextArea = new TextArea("Food/Drinks");
     private TextArea musicTextArea = new TextArea("Music");
-    private TextArea computerRelatedIssuesTextArea = new TextArea("Computer-Related Issues");
+    private TextArea computerRelatedIssuesTextArea = new TextArea("Computer-related Issues");
 
     private Button toSubTeamButton = new Button();
     private Button extraStaffButton = new Button();
@@ -90,68 +91,74 @@ public class ProductionManagerProposalsGridView extends Div {
                 musicTextArea.setValue(event.getValue().getMusic());
                 computerRelatedIssuesTextArea.setValue(event.getValue().getComputerRelatedIssues());
 
-                if (event.getValue() != null) {
-                    binder.setBean(event.getValue());
-                }
+                binder.setBean(event.getValue());
 
                 showButtons(event.getValue().getProductionProposalStatus());
             }
         });
 
-        toSubTeamButton.addClickListener(e -> {
-            Proposal proposalToForward = binder.getBean();
-            if(proposalToForward.getId() == null) {
-                Notification.show("An exception happened while trying to forward the proposal.");
-                return;
-            }
-            proposalToForward.setProductionProposalStatus(ProposalStatus.UNDER_REVIEW_BY_SUBTEAMS);
-            proposalService.putProposal(proposalToForward);
-            clearForm();
-            refreshGrid();
-            Notification.show(String.format("Proposal %s forwarded.", proposalToForward.getRecordNumber()));
-        });
+        toSubTeamButton.addClickListener(this::toSubTeamListener);
 
-        extraStaffButton.addClickListener(e -> {
-            Proposal extraStaffProposal = binder.getBean();
-            if(extraStaffProposal.getId() == null) {
-                Notification.show("An exception happened while trying to request extra staff.");
-                return;
-            }
-            extraStaffProposal.setProductionProposalStatus(ProposalStatus.EXTRA_STAFF_REQUESTED);
-            proposalService.putProposal(extraStaffProposal);
-            clearForm();
-            refreshGrid();
-            Notification.show(String.format("Extra staff requested for %s.", extraStaffProposal.getRecordNumber()));
-        });
+        extraStaffButton.addClickListener(this::extraStuffButtonListener);
 
-        readyButton.addClickListener(e -> {
-            Proposal proposalToForward = binder.getBean();
-            if(proposalToForward.getId() == null) {
-                Notification.show("An exception happened while trying to finalize the proposal.");
-                return;
-            }
-            proposalToForward.setProductionProposalStatus(ProposalStatus.CLOSED);
-            proposalService.putProposal(proposalToForward);
-            clearForm();
-            refreshGrid();
-            Notification.show(String.format("Proposal %s approved.", proposalToForward.getRecordNumber()));
-        });
+        readyButton.addClickListener(this::readyButtonListener);
 
-        extraStaffButton.addClickListener(e -> {
-            Proposal extraStaffProposal = binder.getBean();
-            if(extraStaffProposal.getId() == null) {
-                Notification.show("An exception happened while trying to request extra budget.");
-                return;
-            }
-            extraStaffProposal.setProductionProposalStatus(ProposalStatus.EXTRA_BUDGET_REQUESTED);
-            proposalService.putProposal(extraStaffProposal);
-            clearForm();
-            refreshGrid();
-            Notification.show(String.format("Extra budget requested for %s.", extraStaffProposal.getRecordNumber()));
-        });
+        extraBudgetButton.addClickListener(this::extraBudgetListener);
 
         this.setHeightFull();
         this.add(splitLayout);
+    }
+
+    private void toSubTeamListener(ClickEvent<Button> e) {
+        Proposal proposalToForward = binder.getBean();
+        if(proposalToForward.getId() == null) {
+            Notification.show("An exception happened while trying to forward the proposal.");
+            return;
+        }
+        proposalToForward.setProductionProposalStatus(ProposalStatus.UNDER_REVIEW_BY_SUBTEAMS);
+        proposalService.putProposal(proposalToForward);
+        clearForm();
+        refreshGrid();
+        Notification.show(String.format("Proposal %s forwarded.", proposalToForward.getRecordNumber()));
+    }
+
+    private void extraStuffButtonListener(ClickEvent<Button> e) {
+        Proposal extraStaffProposal = binder.getBean();
+        if(extraStaffProposal.getId() == null) {
+            Notification.show("An exception happened while trying to request extra staff.");
+            return;
+        }
+        extraStaffProposal.setProductionProposalStatus(ProposalStatus.EXTRA_STAFF_REQUESTED);
+        proposalService.putProposal(extraStaffProposal);
+        clearForm();
+        refreshGrid();
+        Notification.show(String.format("Extra staff requested for %s.", extraStaffProposal.getRecordNumber()));
+    }
+
+    private void readyButtonListener(ClickEvent<Button> e) {
+        Proposal proposalToForward = binder.getBean();
+        if(proposalToForward.getId() == null) {
+            Notification.show("An exception happened while trying to finalize the proposal.");
+            return;
+        }
+        proposalToForward.setProductionProposalStatus(ProposalStatus.CLOSED);
+        proposalService.putProposal(proposalToForward);
+        clearForm();
+        refreshGrid();
+        Notification.show(String.format("Proposal %s approved.", proposalToForward.getRecordNumber()));
+    }
+
+    private void extraBudgetListener(ClickEvent<Button> e) {
+        Proposal extraStaffProposal = binder.getBean();
+        if(extraStaffProposal.getId() == null) {
+            Notification.show("An exception happened while trying to request extra budget.");
+            return;
+        }
+        extraStaffProposal.setProductionProposalStatus(ProposalStatus.EXTRA_BUDGET_REQUESTED);
+        proposalService.putProposal(extraStaffProposal);
+        clearForm();
+        refreshGrid();
+        Notification.show(String.format("Extra budget requested for %s.", extraStaffProposal.getRecordNumber()));
     }
 
     private Component createEditorLayout() {
@@ -175,20 +182,24 @@ public class ProductionManagerProposalsGridView extends Div {
     }
 
     private void showButtons(ProposalStatus proposalStatus) {
-        if(proposalStatus == ProposalStatus.INITIATED) {
-            toSubTeamButton.setVisible(true);
-            extraStaffButton.setVisible(true);
-        } else if(proposalStatus == ProposalStatus.UNDER_REVIEW_BY_MANAGER){
-            readyButton.setVisible(true);
-            extraBudgetButton.setVisible(true);
+        if(ProposalStatus.INITIATED.equals(proposalStatus)) {
+            toSubTeamButton.setEnabled(true);
+            extraStaffButton.setEnabled(true);
+            return;
         }
+        if(ProposalStatus.UNDER_REVIEW_BY_MANAGER.equals(proposalStatus)){
+            readyButton.setEnabled(true);
+            extraBudgetButton.setEnabled(true);
+            return;
+        }
+        // Todo: What happens in all the other cases?
     }
 
     private void hideButtons() {
-        toSubTeamButton.setVisible(false);
-        extraStaffButton.setVisible(false);
-        readyButton.setVisible(false);
-        extraBudgetButton.setVisible(false);
+        toSubTeamButton.setEnabled(false);
+        extraStaffButton.setEnabled(false);
+        readyButton.setEnabled(false);
+        extraBudgetButton.setEnabled(false);
     }
 
     private FormLayout createFormLayout() {

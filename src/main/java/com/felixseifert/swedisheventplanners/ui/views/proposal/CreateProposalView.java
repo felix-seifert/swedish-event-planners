@@ -27,7 +27,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.springframework.security.access.annotation.Secured;
 
-@Route(value = "proposal/create", layout = MainView.class)
+@Route(value = "proposals/create", layout = MainView.class)
 @PageTitle("Create Proposal | Swedish Event Planners")
 @Secured({Role.ForAnnotation.CUSTOMER_SERVICE_OFFICER_WITH_PREFIX,
         Role.ForAnnotation.SENIOR_CUSTOMER_SERVICE_OFFICER_WITH_PREFIX,
@@ -50,7 +50,7 @@ public class CreateProposalView extends VerticalLayout {
     private TextArea postersArtWorkTextArea = new TextArea("Posters/Art Work");
     private TextArea foodDrinksTextArea = new TextArea("Food/Drinks");
     private TextArea musicTextArea = new TextArea("Music");
-    private TextArea computerRelatedIssuesTextArea = new TextArea("Computer-Related Issues");
+    private TextArea computerRelatedIssuesTextArea = new TextArea("Computer-related Issues");
 
     private Button saveButton = new Button("Save");
     private Button clearButton = new Button("Clear Form");
@@ -64,7 +64,7 @@ public class CreateProposalView extends VerticalLayout {
 
         this.setId("create-proposal-view");
 
-        add(new Label("A client creates a proposal. The client has to be registered."));
+        add(new Label("Registered clients create a proposal over here."));
 
         this.add(createFormLayout());
         this.add(createButtonLayout());

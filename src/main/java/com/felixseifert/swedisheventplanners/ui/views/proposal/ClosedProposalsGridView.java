@@ -15,22 +15,17 @@ import com.vaadin.flow.component.splitlayout.SplitLayout;
 import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.springframework.security.access.annotation.Secured;
 
 import java.util.Set;
 
-@Route(value = "closed-proposals", layout = MainView.class)
+@Route(value = "proposals/closed", layout = MainView.class)
 @PageTitle("Closed Proposals | Swedish Event Planners")
 @Secured({Role.ForAnnotation.PRODUCTION_MANAGER_WITH_PREFIX,
             Role.ForAnnotation.SERVICES_MANAGER_WITH_PREFIX})
 public class ClosedProposalsGridView extends Div {
-
-    private ProposalService proposalService;
-
-    private Binder<Proposal> binder = new Binder<>();
 
     private Grid<Proposal> grid = new Grid<>();
 
@@ -49,11 +44,9 @@ public class ClosedProposalsGridView extends Div {
     private TextArea postersArtWorkTextArea = new TextArea("Posters/Art Work");
     private TextArea foodDrinksTextArea = new TextArea("Food/Drinks");
     private TextArea musicTextArea = new TextArea("Music");
-    private TextArea computerRelatedIssuesTextArea = new TextArea("Computer-Related Issues");
+    private TextArea computerRelatedIssuesTextArea = new TextArea("Computer-related Issues");
 
     public ClosedProposalsGridView(ProposalService proposalService) {
-
-        this.proposalService = proposalService;
 
         SplitLayout splitLayout = new SplitLayout();
         splitLayout.setSizeFull();
@@ -81,10 +74,6 @@ public class ClosedProposalsGridView extends Div {
                 foodDrinksTextArea.setValue(event.getValue().getFoodDrinks());
                 musicTextArea.setValue(event.getValue().getMusic());
                 computerRelatedIssuesTextArea.setValue(event.getValue().getComputerRelatedIssues());
-
-                if (event.getValue() != null) {
-                    binder.setBean(event.getValue());
-                }
             }
         });
 
@@ -95,9 +84,7 @@ public class ClosedProposalsGridView extends Div {
     private Component createEditorLayout() {
         HorizontalLayout editorLayout = new HorizontalLayout();
         editorLayout.setId("proposal-viewer");
-
         editorLayout.add(createFormLayout());
-
         return editorLayout;
     }
 
@@ -127,6 +114,7 @@ public class ClosedProposalsGridView extends Div {
     }
 
     private Div createGridLayout() {
+
         Div gridLayout = new Div();
         gridLayout.setId("proposal-grid");
         gridLayout.setWidthFull();
@@ -144,29 +132,5 @@ public class ClosedProposalsGridView extends Div {
         gridLayout.add(grid);
 
         return gridLayout;
-    }
-
-    private void refreshGrid() {
-        grid.select(null);
-        grid.setItems(proposalService.getAllProposalsByStatus(Set.of(ProposalStatus.CLOSED)));
-    }
-
-    private void clearForm() {
-        binder.setBean(null);
-        recordNumberTextField.clear();
-        clientNameTextField.clear();
-        eventTypeTextField.clear();
-        fromDateTextField.clear();
-        toDateTextField.clear();
-        productionStatusTextField.clear();
-        serviceStatusTextField.clear();
-        expectedAttendeesTextField.clear();
-        expectedBudgetNumberField.clear();
-        decorationsTextArea.clear();
-        filmingPhotosTextArea.clear();
-        postersArtWorkTextArea.clear();
-        foodDrinksTextArea.clear();
-        musicTextArea.clear();
-        computerRelatedIssuesTextArea.clear();
     }
 }
