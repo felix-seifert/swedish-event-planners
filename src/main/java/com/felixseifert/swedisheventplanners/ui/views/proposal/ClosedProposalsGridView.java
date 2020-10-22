@@ -6,13 +6,10 @@ import com.felixseifert.swedisheventplanners.backend.model.enums.Role;
 import com.felixseifert.swedisheventplanners.backend.service.ProposalService;
 import com.felixseifert.swedisheventplanners.ui.views.main.MainView;
 import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Label;
-import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.splitlayout.SplitLayout;
 import com.vaadin.flow.component.textfield.NumberField;
@@ -25,10 +22,11 @@ import org.springframework.security.access.annotation.Secured;
 
 import java.util.Set;
 
-@Route(value = "manager-proposals", layout = MainView.class)
-@PageTitle("Your proposals | Swedish Event Planners")
-@Secured({Role.ForAnnotation.PRODUCTION_MANAGER_WITH_PREFIX})
-public class ProductionManagerProposalsGridView extends Div {
+@Route(value = "closed-proposals", layout = MainView.class)
+@PageTitle("Closed Proposals | Swedish Event Planners")
+@Secured({Role.ForAnnotation.PRODUCTION_MANAGER_WITH_PREFIX,
+            Role.ForAnnotation.SERVICES_MANAGER_WITH_PREFIX})
+public class ClosedProposalsGridView extends Div {
 
     private ProposalService proposalService;
 
@@ -53,12 +51,7 @@ public class ProductionManagerProposalsGridView extends Div {
     private TextArea musicTextArea = new TextArea("Music");
     private TextArea computerRelatedIssuesTextArea = new TextArea("Computer-Related Issues");
 
-    private Button toSubTeamButton = new Button();
-    private Button extraStaffButton = new Button();
-    private Button readyButton = new Button();
-    private Button extraBudgetButton = new Button();
-
-    public ProductionManagerProposalsGridView(ProposalService proposalService) {
+    public ClosedProposalsGridView(ProposalService proposalService) {
 
         this.proposalService = proposalService;
 
@@ -67,8 +60,7 @@ public class ProductionManagerProposalsGridView extends Div {
         splitLayout.addToSecondary(createEditorLayout());
         splitLayout.addToPrimary(createGridLayout());
 
-        grid.setItems(proposalService.getAllProposalsByStatus(Set.of(ProposalStatus.INITIATED,
-                ProposalStatus.PROCESSING)));
+        grid.setItems(proposalService.getAllProposalsByStatus(Set.of(ProposalStatus.CLOSED)));
 
         grid.asSingleSelect().addValueChangeListener(event -> {
             if(event.getValue() != null) {
@@ -93,61 +85,7 @@ public class ProductionManagerProposalsGridView extends Div {
                 if (event.getValue() != null) {
                     binder.setBean(event.getValue());
                 }
-
-                showButtons(event.getValue().getProductionProposalStatus());
             }
-        });
-
-        toSubTeamButton.addClickListener(e -> {
-            Proposal proposalToForward = binder.getBean();
-            if(proposalToForward.getId() == null) {
-                Notification.show("An exception happened while trying to forward the proposal.");
-                return;
-            }
-            proposalToForward.setProductionProposalStatus(ProposalStatus.UNDER_REVIEW_BY_SUBTEAMS);
-            proposalService.putProposal(proposalToForward);
-            clearForm();
-            refreshGrid();
-            Notification.show(String.format("Proposal %s forwarded.", proposalToForward.getRecordNumber()));
-        });
-
-        extraStaffButton.addClickListener(e -> {
-            Proposal extraStaffProposal = binder.getBean();
-            if(extraStaffProposal.getId() == null) {
-                Notification.show("An exception happened while trying to request extra staff.");
-                return;
-            }
-            extraStaffProposal.setProductionProposalStatus(ProposalStatus.EXTRA_STAFF_REQUESTED);
-            proposalService.putProposal(extraStaffProposal);
-            clearForm();
-            refreshGrid();
-            Notification.show(String.format("Extra staff requested for %s.", extraStaffProposal.getRecordNumber()));
-        });
-
-        readyButton.addClickListener(e -> {
-            Proposal proposalToForward = binder.getBean();
-            if(proposalToForward.getId() == null) {
-                Notification.show("An exception happened while trying to finalize the proposal.");
-                return;
-            }
-            proposalToForward.setProductionProposalStatus(ProposalStatus.CLOSED);
-            proposalService.putProposal(proposalToForward);
-            clearForm();
-            refreshGrid();
-            Notification.show(String.format("Proposal %s approved.", proposalToForward.getRecordNumber()));
-        });
-
-        extraStaffButton.addClickListener(e -> {
-            Proposal extraStaffProposal = binder.getBean();
-            if(extraStaffProposal.getId() == null) {
-                Notification.show("An exception happened while trying to request extra budget.");
-                return;
-            }
-            extraStaffProposal.setProductionProposalStatus(ProposalStatus.EXTRA_BUDGET_REQUESTED);
-            proposalService.putProposal(extraStaffProposal);
-            clearForm();
-            refreshGrid();
-            Notification.show(String.format("Extra budget requested for %s.", extraStaffProposal.getRecordNumber()));
         });
 
         this.setHeightFull();
@@ -158,37 +96,9 @@ public class ProductionManagerProposalsGridView extends Div {
         HorizontalLayout editorLayout = new HorizontalLayout();
         editorLayout.setId("proposal-viewer");
 
-        toSubTeamButton.setText("Forward to sub-teams");
-        toSubTeamButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        extraStaffButton.setText("Request extra staff");
-        extraStaffButton.addThemeVariants(ButtonVariant.LUMO_CONTRAST);
-        readyButton.setText("Ready");
-        readyButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        extraBudgetButton.setText("Request extra budget");
-        extraBudgetButton.addThemeVariants(ButtonVariant.LUMO_CONTRAST);
-
-        hideButtons();
-
         editorLayout.add(createFormLayout());
 
         return editorLayout;
-    }
-
-    private void showButtons(ProposalStatus proposalStatus) {
-        if(proposalStatus == ProposalStatus.INITIATED) {
-            toSubTeamButton.setVisible(true);
-            extraStaffButton.setVisible(true);
-        } else if(proposalStatus == ProposalStatus.UNDER_REVIEW_BY_MANAGER){
-            readyButton.setVisible(true);
-            extraBudgetButton.setVisible(true);
-        }
-    }
-
-    private void hideButtons() {
-        toSubTeamButton.setVisible(false);
-        extraStaffButton.setVisible(false);
-        readyButton.setVisible(false);
-        extraBudgetButton.setVisible(false);
     }
 
     private FormLayout createFormLayout() {
@@ -213,8 +123,7 @@ public class ProductionManagerProposalsGridView extends Div {
         return new FormLayout(recordNumberTextField, clientNameTextField, eventTypeTextField, new Label(),
                 fromDateTextField, toDateTextField, productionStatusTextField, serviceStatusTextField,
                 expectedAttendeesTextField, expectedBudgetNumberField, decorationsTextArea, filmingPhotosTextArea,
-                postersArtWorkTextArea, foodDrinksTextArea, musicTextArea, computerRelatedIssuesTextArea,
-                toSubTeamButton, extraStaffButton, readyButton, extraBudgetButton);
+                postersArtWorkTextArea, foodDrinksTextArea, musicTextArea, computerRelatedIssuesTextArea);
     }
 
     private Div createGridLayout() {
@@ -239,8 +148,8 @@ public class ProductionManagerProposalsGridView extends Div {
 
     private void refreshGrid() {
         grid.select(null);
-        grid.setItems(proposalService.getAllProposalsByStatus(Set.of(ProposalStatus.INITIATED,
-                ProposalStatus.PROCESSING)));    }
+        grid.setItems(proposalService.getAllProposalsByStatus(Set.of(ProposalStatus.CLOSED)));
+    }
 
     private void clearForm() {
         binder.setBean(null);
@@ -259,7 +168,5 @@ public class ProductionManagerProposalsGridView extends Div {
         foodDrinksTextArea.clear();
         musicTextArea.clear();
         computerRelatedIssuesTextArea.clear();
-
-        hideButtons();
     }
 }
