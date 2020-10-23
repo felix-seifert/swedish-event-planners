@@ -66,10 +66,6 @@ The following list shows all the users with their user name and which roles they
 * `secretary`: `Secretary`, `EmployeeViewer`
 * `client`: `Client`
 
-For testing purposes, the page `Master Detail` is only visible by the user `mike`. Relevant changes for this can be 
-done with an annotation over the class name of the view and the menu in 
-[`MainView.java`](https://github.com/felix-seifert/swedish-event-planners/blob/main/src/main/java/com/felixseifert/swedisheventplanners/views/main/MainView.java).
-
 ## Event Flow
 
 Add description on how a request gets generated and flow through the application

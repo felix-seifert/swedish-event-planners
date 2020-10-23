@@ -1,14 +1,9 @@
 package com.felixseifert.swedisheventplanners.ui.views.main;
 
 import com.felixseifert.swedisheventplanners.security.SecurityUtils;
-import com.felixseifert.swedisheventplanners.ui.budgetrequest.BudgetRequestsView;
-import com.felixseifert.swedisheventplanners.ui.views.about.AboutView;
-import com.felixseifert.swedisheventplanners.ui.views.cardlist.CardListView;
+import com.felixseifert.swedisheventplanners.ui.views.budgetrequest.BudgetRequestsView;
 import com.felixseifert.swedisheventplanners.ui.views.client.ClientView;
-import com.felixseifert.swedisheventplanners.ui.views.helloworld.HelloWorldView;
-import com.felixseifert.swedisheventplanners.ui.views.masterdetail.MasterDetailView;
 import com.felixseifert.swedisheventplanners.ui.views.newrequest.*;
-import com.felixseifert.swedisheventplanners.ui.views.personform.PersonFormView;
 import com.felixseifert.swedisheventplanners.ui.views.proposal.*;
 import com.felixseifert.swedisheventplanners.ui.views.staffrequest.HRTeamView;
 import com.vaadin.flow.component.Component;
@@ -143,13 +138,6 @@ public class MainView extends AppLayout {
         if(SecurityUtils.isAccessGranted(ClientView.class)) {
             tabs.add(createTab("Clients", ClientView.class));
         }
-        tabs.add(createTab("Hello World", HelloWorldView.class));
-        tabs.add(createTab("About", AboutView.class));
-        if(SecurityUtils.isAccessGranted(MasterDetailView.class)) {
-            tabs.add(createTab("Master-Detail", MasterDetailView.class));
-        }
-        tabs.add(createTab("Card List", CardListView.class));
-        tabs.add(createTab("Person Form", PersonFormView.class));
 
         return tabs.toArray(new Tab[tabs.size()]);
     }

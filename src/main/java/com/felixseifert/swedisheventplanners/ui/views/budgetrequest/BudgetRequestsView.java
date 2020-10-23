@@ -1,4 +1,4 @@
-package com.felixseifert.swedisheventplanners.ui.budgetrequest;
+package com.felixseifert.swedisheventplanners.ui.views.budgetrequest;
 
 import com.felixseifert.swedisheventplanners.backend.model.Proposal;
 import com.felixseifert.swedisheventplanners.backend.model.enums.ProposalStatus;

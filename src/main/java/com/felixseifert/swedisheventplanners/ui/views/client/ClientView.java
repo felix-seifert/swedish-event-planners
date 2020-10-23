@@ -1,6 +1,7 @@
 package com.felixseifert.swedisheventplanners.ui.views.client;
 
 import com.felixseifert.swedisheventplanners.backend.model.Client;
+import com.felixseifert.swedisheventplanners.backend.model.enums.Role;
 import com.felixseifert.swedisheventplanners.backend.service.ClientService;
 import com.felixseifert.swedisheventplanners.ui.views.main.MainView;
 import com.vaadin.flow.component.button.Button;
@@ -15,9 +16,11 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import org.springframework.security.access.annotation.Secured;
 
 @Route(value = "clients", layout = MainView.class)
 @PageTitle("Clients | Swedish Event Planners")
+@Secured(Role.ForAnnotation.CLIENT_VIEWER_WITH_PREFIX)
 public class ClientView extends Div {
 
     private ClientService clientService;
