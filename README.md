@@ -1,6 +1,24 @@
 # swedish-event-planners
 Event planning tool for the company Swedish Event Planners (project for Modern Methods of Software Engineering)
 
+This tool is developed based on given business requirements. The code style and the implementation is not the most 
+important thing. More emphasise is put on software engineering and project management practices. Especially this 
+assignment drew our attention to some extreme programming approaches. We realised many smaller and bigger things 
+which can be improved. However, we did not focus on all improvement opportunities as the time was limited.
+
+## Content
+These are the different topics which are covered in this README.
+* [Login](#login)
+* [Workflow](#worflow)
+* [Releases](#releases)
+* [Refactoring](#refactoring)
+* [Acceptance Tests](#acceptance-tests)
+* [Planning](#planning)
+* [Metaphor](#metaphor)
+* [Project Structure](#project-structure)
+* [Run Application](#run-application)
+* [Deploy With Docker](#deploy-with-docker)
+
 ## Login
 
 The source code includes a hardcoded version of the different roles and how they are assigned to the also hardcoded 
@@ -51,9 +69,13 @@ For testing purposes, the page `Master Detail` is only visible by the user `mike
 done with an annotation over the class name of the view and the menu in 
 [`MainView.java`](https://github.com/felix-seifert/swedish-event-planners/blob/main/src/main/java/com/felixseifert/swedisheventplanners/views/main/MainView.java).
 
-## Implementation Details
+## Worflow
 
-* The record numbers of every new request has exactly 10 digits and can consist out of numbers and characters.
+Add description on how a request gets generated and flow through the application
+
+## Releases
+
+Write about release policy with continuous deployment and milestones
 
 ## Refactoring
 
@@ -65,18 +87,36 @@ result in missing the set deadlines. As the refactoring is dependent on each dev
 quality is very subjective and other people might have achieved the same differently. We also see improvement potential
 which means that a software project can barely inf an end.
 
-## Project structure
+## Acceptance Tests
+
+Mention acceptance criteria for certain stories
+
+## Planning
+
+Write about sprint, release and time planning. Also consider to write about the assigned risks and values.
+
+## Metaphor
+
+To convince other, non-technical people of the own programme or project, a metaphor is needed to outline the project 
+and creator a greater interest of the other person. Furthermore, creating a metaphor helps to structure the own project 
+clearer.
+
+...add metaphor...
+
+## Project Structure
 
 - `MainView.java` in `src/main/java` contains the navigation setup. It uses [App Layout](https://vaadin.com/components/vaadin-app-layout).
-- `views` package in `src/main/java` contains the server-side Java views of your application.
-- `views` folder in `frontend/src/` contains the client-side JavaScript views of your application.
+- `views` package in `src/main/java/ui` contains the server-side Java views of the application.
+- `views` folder in `frontend/src/` contains the client-side JavaScript views of the application.
+- `backend` folder in `src/main/java` contains the backend in Java of the application. The backend is divided into models, repositories and services.
+- `security` folder in `src/main/java` contains the configured security function of Spring Security. It does not contain a proper user management and the roles are hardcoded.
 
-## Running the Application
+## Run Application
 There are two ways to run the application:  
  - To run from the command line, use `mvn` and open [http://localhost:8080](http://localhost:8080) in your browser.
  - Another way is to to run the `Application` class directly from your IDE.
 
-## Deploying using Docker
+## Deploy With Docker
 
 To build the Dockerized version of the project, run
 
@@ -89,3 +129,5 @@ Once the Docker image is correctly built, you can test it locally using
 ```
 docker run -p 8080:8080 sep:latest
 ```
+
+...Consider to add Docker image to Docker Hub...
