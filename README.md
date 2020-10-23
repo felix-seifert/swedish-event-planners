@@ -11,8 +11,8 @@ These are the different topics which are covered in this README.
 * [Login](#login)
 * [Workflow](#worflow)
 * [Releases](#releases)
-* [Refactoring](#refactoring)
 * [Planning](#planning)
+* [Refactoring](#refactoring)
 * [Metaphor](#metaphor)
 * [Acceptance Tests](#acceptance-tests)
 * [Stand-up Meeting Reports](#stand-up-meeting-reports)
@@ -70,13 +70,38 @@ For testing purposes, the page `Master Detail` is only visible by the user `mike
 done with an annotation over the class name of the view and the menu in 
 [`MainView.java`](https://github.com/felix-seifert/swedish-event-planners/blob/main/src/main/java/com/felixseifert/swedisheventplanners/views/main/MainView.java).
 
-## Worflow
+## Event Flow
 
 Add description on how a request gets generated and flow through the application
 
 ## Releases
 
-Write about release policy with continuous deployment and milestones
+The implemented system should be released each time a set of stories is readily implemented, tested and merged to the 
+production branch (continuous delivery). This can be for example implemented with the GitHub Actions. Like this, stakeholders 
+are able to immediately test the system and provide feedback to the developers who develop their system. 
+
+This sets of stories where visualised in form of milestones to stories should be implemented. We did not follow the 
+estimated risk or value of a story but the actual event flow at the application domain. Even though the general event 
+flow was known at the beginning, we assigned the stories to the different milestones gradually because not all the 
+implementation details were clear at the beginning. This also helps in accommodating changes which occur over time 
+and might not be known at the beginning.
+
+The milestones and therefore planned releases [can be seen in the GitHub repository](https://github.com/felix-seifert/swedish-event-planners/milestones).
+
+## Planning
+
+In the actual implementation, we followed roughly the Kanban approach where each of us works on implementing a story,
+informs the other one about the result who then reviewed and tested the implementation. The story which we assigned 
+were selected based on the previously described milestones.
+
+The decision about the value of each story is based on the assumed importance of each story in the application domain. 
+As no real customer was present, the risk assessment happened mainly based on programming experiences. They became 
+slightly more exact over time.
+
+We started to estimate the duration of the stories for the actual milestone. Even though our estimations became more 
+exact over time, the estimations were generally to low. Especially the later described approach of pair programming 
+seemed to be slightly more time-consuming. Anyway, the time estimates and the actual used implementation time are not 
+visible anymore because somehow the used tool let the timings disappear if you end the subscription.
 
 ## Refactoring
 
@@ -86,11 +111,8 @@ developers realise immediately that the improvement through refactoring is worth
 that the amount of needed time for the refactoring is bigger than the gained improvement or the time needed would 
 result in missing the set deadlines. As the refactoring is dependent on each developer and the project scope, the code
 quality is very subjective and other people might have achieved the same differently. We also see improvement potential
-which means that a software project can barely inf an end.
-
-## Planning
-
-Write about sprint, release and time planning. Also consider to write about the assigned risks and values.
+which means that a software project can barely inf an end. Some refactoring ideas can be seen on the [page of our 
+issues](https://github.com/felix-seifert/swedish-event-planners/issues).
 
 ## Metaphor
 
