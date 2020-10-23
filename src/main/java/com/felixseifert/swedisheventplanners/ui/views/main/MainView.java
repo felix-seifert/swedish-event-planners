@@ -118,6 +118,12 @@ public class MainView extends AppLayout {
         if(SecurityUtils.isAccessGranted(ProductionSubTeamProposalsGridView.class)) {
             tabs.add(createTab("Production sub-team proposals", ProductionSubTeamProposalsGridView.class));
         }
+        if(SecurityUtils.isAccessGranted(ServiceManagerProposalsGridView.class)) {
+            tabs.add(createTab("Your proposals", ServiceManagerProposalsGridView.class));
+        }
+        if(SecurityUtils.isAccessGranted(ServiceSubTeamProposalsGridView.class)) {
+            tabs.add(createTab("Service sub-team proposals", ServiceSubTeamProposalsGridView.class));
+        }
         if(SecurityUtils.isAccessGranted(ClosedProposalsGridView.class)) {
             tabs.add(createTab("Closed proposals", ClosedProposalsGridView.class));
         }

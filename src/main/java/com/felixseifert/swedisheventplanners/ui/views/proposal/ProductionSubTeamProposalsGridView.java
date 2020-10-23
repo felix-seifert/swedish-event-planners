@@ -86,7 +86,7 @@ public class ProductionSubTeamProposalsGridView extends Div {
 
                 binder.setBean(event.getValue());
 
-                showButtons(event.getValue().getProductionProposalStatus());
+                showButtons();
             }
         });
 
@@ -140,7 +140,7 @@ public class ProductionSubTeamProposalsGridView extends Div {
         return editorLayout;
     }
 
-    private void showButtons(ProposalStatus proposalStatus) {
+    private void showButtons() {
         readyButton.setEnabled(true);
         extraBudgetButton.setEnabled(true);
     }
@@ -167,10 +167,10 @@ public class ProductionSubTeamProposalsGridView extends Div {
         musicTextArea.setReadOnly(true);
         computerRelatedIssuesTextArea.setReadOnly(true);
 
-        return new FormLayout(recordNumberTextField, clientNameTextField, eventTypeTextField, new Label(),
-                fromDateTextField, toDateTextField, productionStatusTextField,
-                expectedAttendeesTextField, expectedBudgetNumberField, decorationsTextArea, filmingPhotosTextArea,
-                postersArtWorkTextArea, musicTextArea, computerRelatedIssuesTextArea, readyButton, extraBudgetButton);
+        return new FormLayout(recordNumberTextField, clientNameTextField, eventTypeTextField, productionStatusTextField,
+                fromDateTextField, toDateTextField, expectedAttendeesTextField, expectedBudgetNumberField,
+                decorationsTextArea, filmingPhotosTextArea, postersArtWorkTextArea, musicTextArea,
+                computerRelatedIssuesTextArea, new Label(), readyButton, extraBudgetButton);
     }
 
     private Div createGridLayout() {
@@ -184,8 +184,6 @@ public class ProductionSubTeamProposalsGridView extends Div {
         grid.addColumn(proposal -> proposal.getFrom().toString()).setHeader("Start Date");
         grid.addColumn(proposal -> proposal.getProductionProposalStatus().toString())
                 .setHeader("Production Status");
-        grid.addColumn(proposal -> proposal.getServiceProposalStatus().toString())
-                .setHeader("Service Status");
         grid.setHeightFull();
 
         gridLayout.add(grid);
