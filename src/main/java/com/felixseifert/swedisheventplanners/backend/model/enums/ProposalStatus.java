@@ -9,6 +9,8 @@ public enum ProposalStatus {
     INITIATED("Request initiated", 1),
     PROCESSING("Request being processed", 2),
     EXTRA_STAFF_REQUESTED("Extra staff requested", 3),
+    STAFF_REQUEST_SOLVED_WITH_RECRUITMENT("Staff request solved with recruitment", 31),
+    STAFF_REQUEST_SOLVED_WITH_OUTSOURCING("Staff request solved with outsourcing", 32),
     UNDER_REVIEW_BY_SUBTEAMS("Subteams revision", 4),
     EXTRA_BUDGET_REQUESTED_BY_SUBTEAM("Extra budget requested by subteam", 5),
     UNDER_REVIEW_BY_MANAGER("Manager revision", 6),
