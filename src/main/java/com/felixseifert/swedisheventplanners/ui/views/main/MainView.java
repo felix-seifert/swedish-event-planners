@@ -102,9 +102,6 @@ public class MainView extends AppLayout {
         if(SecurityUtils.isAccessGranted(CreateNewRequestView.class)) {
             tabs.add(createTab("Create New Event Request", CreateNewRequestView.class));
         }
-        if(SecurityUtils.isAccessGranted(CreateProposalView.class)) {
-            tabs.add(createTab("Create Proposal", CreateProposalView.class));
-        }
         if(SecurityUtils.isAccessGranted(NewRequestsSCSOGridView.class)) {
             tabs.add(createTab("Event Requests to Review", NewRequestsSCSOGridView.class));
         }
@@ -116,6 +113,9 @@ public class MainView extends AppLayout {
         }
         if(SecurityUtils.isAccessGranted(ReviewedRequestsGridView.class)) {
             tabs.add(createTab("Reviewed Event Requests", ReviewedRequestsGridView.class));
+        }
+        if(SecurityUtils.isAccessGranted(CreateProposalView.class)) {
+            tabs.add(createTab("Create Proposal", CreateProposalView.class));
         }
         if(SecurityUtils.isAccessGranted(ProductionManagerProposalsGridView.class)) {
             tabs.add(createTab("Your proposals", ProductionManagerProposalsGridView.class));
