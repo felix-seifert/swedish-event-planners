@@ -161,6 +161,27 @@ See the [story](https://github.com/felix-seifert/swedish-event-planners/issues/6
 
 ## Stand-up Meeting Reports
 
+| 2020-10-05                  | Stand-up Meeting Report                                                                                                         |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| Participants                | Felix Seifert, Àlex Costa Sánchez                                                                                               |
+| Summary of Activities       | Project kick-off, no previous activities.                                                                                       |
+| Expected Actions for Today  | 1. Write a complete set of stories.<br>2. Select relevant stories for the first release.                                        |
+| Problems                    | None.                                                                                                                           |
+
+| 2020-10-12                  | Stand-up Meeting Report                                                                                                         |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| Participants                | Felix Seifert, Àlex Costa Sánchez                                                                                               |
+| Summary of Activities       | 1. Successfully completed the first milestone.                                                                                  |
+| Expected Actions for Today  | 1. Write the metaphor<br>2. Start the set of stories for the second milestone.                                                  |
+| Problems                    | None.                                                                                                                           |
+
+| 2020-10-19                  | Stand-up Meeting Report                                                                                                         |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| Participants                | Felix Seifert, Àlex Costa Sánchez                                                                                               |
+| Summary of Activities       | 1. Successfully completed the second milestone.<br>2. Metaphor written down.<br>3. Third milestone started.                     |
+| Expected Actions for Today  | 1. Start writing final documentation.<br>2. Continue working on the third milestone.<br>3. Special focus on finishing workflows.|
+| Problems                    | Time constrains will be challenging.                                                                                            |
+
 ## Project Structure
 
 - `MainView.java` in `src/main/java` contains the navigation setup. It uses [App Layout](https://vaadin.com/components/vaadin-app-layout).
