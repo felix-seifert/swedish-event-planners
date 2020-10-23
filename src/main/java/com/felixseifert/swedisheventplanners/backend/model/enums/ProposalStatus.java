@@ -15,6 +15,7 @@ public enum ProposalStatus {
     EXTRA_BUDGET_REQUESTED_BY_SUBTEAM("Extra budget requested by subteam", 5),
     UNDER_REVIEW_BY_MANAGER("Manager revision", 6),
     EXTRA_BUDGET_REQUESTED("Extra budget requested", 7),
+    BUDGET_REQUEST_HANDLED("Budget request handled", 71),
     CLOSED("Closed", 8);
 
     @Getter

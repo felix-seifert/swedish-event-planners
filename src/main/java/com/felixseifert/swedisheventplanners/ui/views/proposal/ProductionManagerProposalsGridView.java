@@ -152,16 +152,16 @@ public class ProductionManagerProposalsGridView extends Div {
     }
 
     private void extraBudgetListener(ClickEvent<Button> e) {
-        Proposal extraStaffProposal = binder.getBean();
-        if(extraStaffProposal.getId() == null) {
+        Proposal extraBudgetProposal = binder.getBean();
+        if(extraBudgetProposal.getId() == null) {
             Notification.show("An exception happened while trying to request extra budget.");
             return;
         }
-        extraStaffProposal.setProductionProposalStatus(ProposalStatus.EXTRA_BUDGET_REQUESTED);
-        proposalService.putProposal(extraStaffProposal);
+        extraBudgetProposal.setProductionProposalStatus(ProposalStatus.EXTRA_BUDGET_REQUESTED);
+        proposalService.putProposal(extraBudgetProposal);
         clearForm();
         refreshGrid();
-        Notification.show(String.format("Extra budget requested for %s.", extraStaffProposal.getRecordNumber()));
+        Notification.show(String.format("Extra budget requested for %s.", extraBudgetProposal.getRecordNumber()));
     }
 
     private Component createEditorLayout() {
@@ -195,7 +195,8 @@ public class ProductionManagerProposalsGridView extends Div {
             extraStaffButton.setEnabled(true);
             return;
         }
-        if(ProposalStatus.UNDER_REVIEW_BY_MANAGER.equals(proposalStatus)){
+        if(ProposalStatus.UNDER_REVIEW_BY_MANAGER.equals(proposalStatus) ||
+                ProposalStatus.BUDGET_REQUEST_HANDLED.equals(proposalStatus)){
             readyButton.setEnabled(true);
             return;
         }
