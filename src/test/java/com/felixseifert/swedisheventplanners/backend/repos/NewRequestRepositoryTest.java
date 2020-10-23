@@ -16,6 +16,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -79,7 +80,7 @@ public class NewRequestRepositoryTest {
 
     @Test
     public void findByRequestStatusTest() {
-        List<NewRequest> newRequests = newRequestRepository.findAllByRequestStatus(RequestStatus.UNDER_REVIEW_BY_FM);
+        List<NewRequest> newRequests = newRequestRepository.findByRequestStatusIn(Set.of(RequestStatus.UNDER_REVIEW_BY_FM));
         assertEquals(List.of(newRequest1), newRequests);
     }
 

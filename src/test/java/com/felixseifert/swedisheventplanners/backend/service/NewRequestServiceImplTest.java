@@ -21,6 +21,7 @@ import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -102,10 +103,10 @@ public class NewRequestServiceImplTest {
 
     @Test
     public void getNewRequestByRequestStatusTest() {
-        when(newRequestRepository.findAllByRequestStatus(RequestStatus.UNDER_REVIEW_BY_FM))
+        when(newRequestRepository.findByRequestStatusIn(Set.of(RequestStatus.UNDER_REVIEW_BY_FM)))
                 .thenReturn(List.of(newRequest1));
         List<NewRequest> actualNewRequests = newRequestService
-                .getAllNewRequestsByStatus(RequestStatus.UNDER_REVIEW_BY_FM);
+                .getAllNewRequestsByStatus(Set.of(RequestStatus.UNDER_REVIEW_BY_FM));
         assertEquals(List.of(newRequest1), actualNewRequests);
     }
 
