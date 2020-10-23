@@ -89,7 +89,41 @@ which means that a software project can barely inf an end.
 
 ## Acceptance Tests
 
-Mention acceptance criteria for certain stories
+### Review Request by FinancialManager
+
+Expected Actions:
+1. After login, FinancialManager selects a New Request from list.
+2. FinancialManager reviews the New Request.
+3. FinancialManager clicks on `Reject request' button.
+
+Expected Results:
+1. FinancialManager sees New Request list.
+2. The details for the selected New Request appear on the right half of the screen.
+3. After clicking the button, FinancialManager can no longer see the New Request.
+
+Test Result:
+Successful
+
+See the [story](https://github.com/felix-seifert/swedish-event-planners/issues/11).
+
+### Proposal forwarded to Sub-teams by ProductionManager
+Proposal forwarded to Sub-teams by Production Manager
+
+Expected Actions:
+1. After login, ProductionManager selects a Proposal from list.
+2. ProductionManager reviews the Proposal.
+3. ProductionManager clicks on `Forward to sub-teams' button.
+
+Expected Results:
+1. ProductionManager sees Proposal list.
+2. The details for the selected Proposal appear on the right half of the screen.
+3. After clicking the button, ProductionManager can still see forwarded Proposals in his/her grid 
+(as long as hi/her subteam works on it), but its status has changed.
+
+Test Result:
+Successful
+
+See the [story](https://github.com/felix-seifert/swedish-event-planners/issues/6).
 
 ## Planning
 
@@ -101,11 +135,16 @@ To convince other, non-technical people of the own programme or project, a metap
 and creator a greater interest of the other person. Furthermore, creating a metaphor helps to structure the own project 
 clearer.
 
-Our program can be thought as a cook preparing a meal for a group of customers. A brief explanation is given in the following paragraphs, as well a a table mapping metaphor elements with the actual system.
+Our program can be thought as a cook preparing a meal for a group of customers. A brief explanation is given in the 
+following paragraphs, as well a a table mapping metaphor elements with the actual system.
 
-A cook needs to prepare a dish for a group of customers. She selects first a recipe from a book and proposes to her clients. Then, she asks for food preferences and allergies. After making the appropriate changes to the recipe, the cook is ready to start cooking.
+A cook needs to prepare a dish for a group of customers. She selects first a recipe from a book and proposes to her 
+clients. Then, she asks for food preferences and allergies. After making the appropriate changes to the recipe, the 
+cook is ready to start cooking.
 
-First, she needs to check whether she has the required ingredients. If not, buy them. With all the ingredients ready, she can proceed to the actual preparation of the dish. Once the dish is cooked, she needs to check whether the customers are all seated. If so, she can proceed to serve the meal.
+First, she needs to check whether she has the required ingredients. If not, buy them. With all the ingredients ready, 
+she can proceed to the actual preparation of the dish. Once the dish is cooked, she needs to check whether the customers 
+are all seated. If so, she can proceed to serve the meal.
 
 | Metaphor                           | System                                                                                                       |
 | ---------------------------------- | ------------------------------------------------------------------------------------------------------------ |
