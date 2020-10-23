@@ -5,6 +5,7 @@ import com.felixseifert.swedisheventplanners.backend.model.enums.ProposalStatus;
 import com.felixseifert.swedisheventplanners.backend.model.enums.Role;
 import com.felixseifert.swedisheventplanners.backend.service.ProposalService;
 import com.felixseifert.swedisheventplanners.ui.views.main.MainView;
+import com.vaadin.flow.component.AbstractField;
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
@@ -24,6 +25,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.springframework.security.access.annotation.Secured;
 
+import java.util.List;
 import java.util.Set;
 
 @Route(value = "proposals/production-manager", layout = MainView.class)
@@ -68,34 +70,9 @@ public class ProductionManagerProposalsGridView extends Div {
         splitLayout.addToSecondary(createEditorLayout());
         splitLayout.addToPrimary(createGridLayout());
 
-        grid.setItems(proposalService.getAllProposalsByStatus(Set.of(ProposalStatus.INITIATED,
-                ProposalStatus.PROCESSING)));
+        grid.setItems(getItems());
 
-        grid.asSingleSelect().addValueChangeListener(event -> {
-            if(event.getValue() != null) {
-                recordNumberTextField.setValue(event.getValue().getRecordNumber());
-                clientNameTextField.setValue(event.getValue().getClient().getName());
-                clientContactTextField.setValue(event.getValue().getClient().getContactDetails());
-                eventTypeTextField.setValue(event.getValue().getEventType().getName());
-                fromDateTextField.setValue(event.getValue().getFrom().toString());
-                toDateTextField.setValue(event.getValue().getTo().toString());
-                productionStatusTextField.setValue(event.getValue().getProductionProposalStatus().toString());
-                serviceStatusTextField.setValue(event.getValue().getServiceProposalStatus().toString());
-                expectedAttendeesTextField.setValue(event.getValue().getExpectedNumberOfAttendees() != null ?
-                        event.getValue().getExpectedNumberOfAttendees().toString() : "");
-                expectedBudgetNumberField.setValue(event.getValue().getExpectedBudget());
-                decorationsTextArea.setValue(event.getValue().getDecorations());
-                filmingPhotosTextArea.setValue(event.getValue().getFilmingPhotos());
-                postersArtWorkTextArea.setValue(event.getValue().getPostersArtWork());
-                foodDrinksTextArea.setValue(event.getValue().getFoodDrinks());
-                musicTextArea.setValue(event.getValue().getMusic());
-                computerRelatedIssuesTextArea.setValue(event.getValue().getComputerRelatedIssues());
-
-                binder.setBean(event.getValue());
-
-                showButtons(event.getValue().getProductionProposalStatus());
-            }
-        });
+        grid.asSingleSelect().addValueChangeListener(this::gridSingleSelectListener);
 
         toSubTeamButton.addClickListener(this::toSubTeamListener);
 
@@ -107,6 +84,32 @@ public class ProductionManagerProposalsGridView extends Div {
 
         this.setHeightFull();
         this.add(splitLayout);
+    }
+
+    private void gridSingleSelectListener(AbstractField.ComponentValueChangeEvent<Grid<Proposal>, Proposal> event) {
+        if (event.getValue() != null) {
+            recordNumberTextField.setValue(event.getValue().getRecordNumber());
+            clientNameTextField.setValue(event.getValue().getClient().getName());
+            clientContactTextField.setValue(event.getValue().getClient().getContactDetails());
+            eventTypeTextField.setValue(event.getValue().getEventType().getName());
+            fromDateTextField.setValue(event.getValue().getFrom().toString());
+            toDateTextField.setValue(event.getValue().getTo().toString());
+            productionStatusTextField.setValue(event.getValue().getProductionProposalStatus().toString());
+            serviceStatusTextField.setValue(event.getValue().getServiceProposalStatus().toString());
+            expectedAttendeesTextField.setValue(event.getValue().getExpectedNumberOfAttendees() != null ?
+                    event.getValue().getExpectedNumberOfAttendees().toString() : "");
+            expectedBudgetNumberField.setValue(event.getValue().getExpectedBudget());
+            decorationsTextArea.setValue(event.getValue().getDecorations());
+            filmingPhotosTextArea.setValue(event.getValue().getFilmingPhotos());
+            postersArtWorkTextArea.setValue(event.getValue().getPostersArtWork());
+            foodDrinksTextArea.setValue(event.getValue().getFoodDrinks());
+            musicTextArea.setValue(event.getValue().getMusic());
+            computerRelatedIssuesTextArea.setValue(event.getValue().getComputerRelatedIssues());
+
+            binder.setBean(event.getValue());
+
+            enableButtons(event.getValue().getProductionProposalStatus());
+        }
     }
 
     private void toSubTeamListener(ClickEvent<Button> e) {
@@ -181,7 +184,12 @@ public class ProductionManagerProposalsGridView extends Div {
         return editorLayout;
     }
 
-    private void showButtons(ProposalStatus proposalStatus) {
+    private void enableButtons(ProposalStatus proposalStatus) {
+        if(ProposalStatus.STAFF_REQUEST_SOLVED_WITH_OUTSOURCING.equals(proposalStatus) ||
+                ProposalStatus.STAFF_REQUEST_SOLVED_WITH_RECRUITMENT.equals(proposalStatus)) {
+            toSubTeamButton.setEnabled(true);
+            return;
+        }
         if(ProposalStatus.INITIATED.equals(proposalStatus)) {
             toSubTeamButton.setEnabled(true);
             extraStaffButton.setEnabled(true);
@@ -194,7 +202,6 @@ public class ProductionManagerProposalsGridView extends Div {
         if(ProposalStatus.EXTRA_BUDGET_REQUESTED_BY_SUBTEAM.equals(proposalStatus)) {
             readyButton.setEnabled(true);
             extraBudgetButton.setEnabled(true);
-            return;
         }
     }
 
@@ -251,10 +258,15 @@ public class ProductionManagerProposalsGridView extends Div {
         return gridLayout;
     }
 
+    private List<Proposal> getItems() {
+        return proposalService.getAllProposalsByStatus(Set.of(ProposalStatus.INITIATED,
+                ProposalStatus.PROCESSING));
+    }
+
     private void refreshGrid() {
         grid.select(null);
-        grid.setItems(proposalService.getAllProposalsByStatus(Set.of(ProposalStatus.INITIATED,
-                ProposalStatus.PROCESSING)));    }
+        grid.setItems(getItems());
+    }
 
     private void clearForm() {
         binder.setBean(null);
