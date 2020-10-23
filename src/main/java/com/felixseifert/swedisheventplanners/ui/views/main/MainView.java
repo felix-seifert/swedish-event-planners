@@ -1,6 +1,7 @@
 package com.felixseifert.swedisheventplanners.ui.views.main;
 
 import com.felixseifert.swedisheventplanners.security.SecurityUtils;
+import com.felixseifert.swedisheventplanners.ui.budgetrequest.BudgetRequestsView;
 import com.felixseifert.swedisheventplanners.ui.views.about.AboutView;
 import com.felixseifert.swedisheventplanners.ui.views.cardlist.CardListView;
 import com.felixseifert.swedisheventplanners.ui.views.client.ClientView;
@@ -135,6 +136,9 @@ public class MainView extends AppLayout {
         }
         if(SecurityUtils.isAccessGranted(HRTeamView.class)) {
             tabs.add(createTab("Staff Requests", HRTeamView.class));
+        }
+        if(SecurityUtils.isAccessGranted(BudgetRequestsView.class)) {
+            tabs.add(createTab("Budget Requests", BudgetRequestsView.class));
         }
         if(SecurityUtils.isAccessGranted(ClientView.class)) {
             tabs.add(createTab("Clients", ClientView.class));

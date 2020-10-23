@@ -1,4 +1,4 @@
-package com.felixseifert.swedisheventplanners.ui.views.proposal;
+package com.felixseifert.swedisheventplanners.ui.budgetrequest;
 
 import com.felixseifert.swedisheventplanners.backend.model.Proposal;
 import com.felixseifert.swedisheventplanners.backend.model.enums.ProposalStatus;
@@ -27,11 +27,13 @@ import org.springframework.security.access.annotation.Secured;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-@Route(value = "proposals/service-manager", layout = MainView.class)
-@PageTitle("Your proposals | Swedish Event Planners")
-@Secured({Role.ForAnnotation.SERVICES_MANAGER_WITH_PREFIX})
-public class ServiceManagerProposalsGridView extends Div {
+@Route(value = "budget-request", layout = MainView.class)
+@PageTitle("Budget Requests | Swedish Event Planners")
+@Secured({Role.ForAnnotation.FINANCIAL_MANAGER_WITH_PREFIX})
+public class BudgetRequestsView extends Div {
 
     private ProposalService proposalService;
 
@@ -56,31 +58,21 @@ public class ServiceManagerProposalsGridView extends Div {
     private TextArea musicTextArea = new TextArea("Music");
     private TextArea computerRelatedIssuesTextArea = new TextArea("Computer-related Issues");
 
-    private Button toSubTeamButton = new Button();
-    private Button extraStaffButton = new Button();
-    private Button readyButton = new Button();
-    private Button extraBudgetButton = new Button();
+    private Button confirmButton = new Button();
 
-    public ServiceManagerProposalsGridView(ProposalService proposalService) {
+    public BudgetRequestsView(ProposalService proposalService) {
 
         this.proposalService = proposalService;
-
         SplitLayout splitLayout = new SplitLayout();
         splitLayout.setSizeFull();
-        splitLayout.addToSecondary(createEditorLayout());
         splitLayout.addToPrimary(createGridLayout());
+        splitLayout.addToSecondary(createEditorLayout());
 
         grid.setItems(getItems());
 
         grid.asSingleSelect().addValueChangeListener(this::gridSingleSelectListener);
 
-        toSubTeamButton.addClickListener(this::toSubTeamListener);
-
-        extraStaffButton.addClickListener(this::extraStuffButtonListener);
-
-        readyButton.addClickListener(this::readyButtonListener);
-
-        extraBudgetButton.addClickListener(this::extraBudgetListener);
+        confirmButton.addClickListener(this::confirmListener);
 
         this.setHeightFull();
         this.add(splitLayout);
@@ -108,109 +100,55 @@ public class ServiceManagerProposalsGridView extends Div {
 
             binder.setBean(event.getValue());
 
-            showButtons(event.getValue().getServiceProposalStatus());
+            enableButtons(true);
         }
     }
 
-    private void toSubTeamListener(ClickEvent<Button> e) {
-        Proposal proposalToForward = binder.getBean();
-        if(proposalToForward.getId() == null) {
-            Notification.show("An exception happened while trying to forward the proposal.");
+    private void confirmListener(ClickEvent<Button> e) {
+        Proposal proposal = binder.getBean();
+        if(proposal.getId() == null) {
+            Notification.show("An exception happened while trying to handle the budget request.");
             return;
         }
-        proposalToForward.setServiceProposalStatus(ProposalStatus.UNDER_REVIEW_BY_SUBTEAMS);
-        proposalService.putProposal(proposalToForward);
+        if(ProposalStatus.EXTRA_BUDGET_REQUESTED.equals(proposal.getProductionProposalStatus())) {
+            proposal.setProductionProposalStatus(ProposalStatus.BUDGET_REQUEST_HANDLED);
+        }
+        if(ProposalStatus.EXTRA_BUDGET_REQUESTED.equals(proposal.getServiceProposalStatus())) {
+            proposal.setServiceProposalStatus(ProposalStatus.BUDGET_REQUEST_HANDLED);
+        }
+        proposalService.putProposal(proposal);
         clearForm();
         refreshGrid();
-        Notification.show(String.format("Proposal %s forwarded.", proposalToForward.getRecordNumber()));
+        Notification.show(String.format("Budget request for %s handled.", proposal.getRecordNumber()));
     }
 
-    private void extraStuffButtonListener(ClickEvent<Button> e) {
-        Proposal extraStaffProposal = binder.getBean();
-        if(extraStaffProposal.getId() == null) {
-            Notification.show("An exception happened while trying to request extra staff.");
-            return;
-        }
-        extraStaffProposal.setServiceProposalStatus(ProposalStatus.EXTRA_STAFF_REQUESTED);
-        proposalService.putProposal(extraStaffProposal);
-        clearForm();
-        refreshGrid();
-        Notification.show(String.format("Extra staff requested for %s.", extraStaffProposal.getRecordNumber()));
-    }
+    private Div createGridLayout() {
+        Div gridLayout = new Div();
+        gridLayout.setId("hr-grid");
+        gridLayout.setWidthFull();
 
-    private void readyButtonListener(ClickEvent<Button> e) {
-        Proposal proposalToForward = binder.getBean();
-        if(proposalToForward.getId() == null) {
-            Notification.show("An exception happened while trying to finalize the proposal.");
-            return;
-        }
-        proposalToForward.setServiceProposalStatus(ProposalStatus.CLOSED);
-        proposalService.putProposal(proposalToForward);
-        clearForm();
-        refreshGrid();
-        Notification.show(String.format("Proposal %s approved.", proposalToForward.getRecordNumber()));
-    }
+        grid.addColumn(Proposal::getRecordNumber).setHeader("Record Number");
+        grid.addColumn(proposal -> proposal.getClient().getName()).setHeader("Client");
+        grid.addColumn(proposal -> proposal.getEventType().getName()).setHeader("Event Type");
+        grid.addColumn(proposal -> proposal.getFrom().toString()).setHeader("Start Date");
+        grid.addColumn(proposal -> proposal.getProductionProposalStatus().toString())
+                .setHeader("Production Status");
+        grid.addColumn(proposal -> proposal.getServiceProposalStatus().toString())
+                .setHeader("Service Status");
+        grid.setHeightFull();
 
-    private void extraBudgetListener(ClickEvent<Button> e) {
-        Proposal extraStaffProposal = binder.getBean();
-        if(extraStaffProposal.getId() == null) {
-            Notification.show("An exception happened while trying to request extra budget.");
-            return;
-        }
-        extraStaffProposal.setServiceProposalStatus(ProposalStatus.EXTRA_BUDGET_REQUESTED);
-        proposalService.putProposal(extraStaffProposal);
-        clearForm();
-        refreshGrid();
-        Notification.show(String.format("Extra budget requested for %s.", extraStaffProposal.getRecordNumber()));
+        gridLayout.add(grid);
+
+        return gridLayout;
     }
 
     private Component createEditorLayout() {
         HorizontalLayout editorLayout = new HorizontalLayout();
-        editorLayout.setId("proposal-viewer");
-
-        toSubTeamButton.setText("Forward to sub-teams");
-        toSubTeamButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        extraStaffButton.setText("Request extra staff");
-        extraStaffButton.addThemeVariants(ButtonVariant.LUMO_CONTRAST);
-        readyButton.setText("Ready");
-        readyButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        extraBudgetButton.setText("Request extra budget");
-        extraBudgetButton.addThemeVariants(ButtonVariant.LUMO_CONTRAST);
-
-        hideButtons();
+        editorLayout.setId("hr-viewer");
 
         editorLayout.add(createFormLayout());
 
         return editorLayout;
-    }
-
-    private void showButtons(ProposalStatus proposalStatus) {
-        if(ProposalStatus.STAFF_REQUEST_SOLVED_WITH_OUTSOURCING.equals(proposalStatus) ||
-                ProposalStatus.STAFF_REQUEST_SOLVED_WITH_RECRUITMENT.equals(proposalStatus)) {
-            toSubTeamButton.setEnabled(true);
-            return;
-        }
-        if(ProposalStatus.INITIATED.equals(proposalStatus)) {
-            toSubTeamButton.setEnabled(true);
-            extraStaffButton.setEnabled(true);
-            return;
-        }
-        if(ProposalStatus.UNDER_REVIEW_BY_MANAGER.equals(proposalStatus) ||
-                ProposalStatus.BUDGET_REQUEST_HANDLED.equals(proposalStatus)){
-            readyButton.setEnabled(true);
-            return;
-        }
-        if(ProposalStatus.EXTRA_BUDGET_REQUESTED_BY_SUBTEAM.equals(proposalStatus)) {
-            readyButton.setEnabled(true);
-            extraBudgetButton.setEnabled(true);
-        }
-    }
-
-    private void hideButtons() {
-        toSubTeamButton.setEnabled(false);
-        extraStaffButton.setEnabled(false);
-        readyButton.setEnabled(false);
-        extraBudgetButton.setEnabled(false);
     }
 
     private FormLayout createFormLayout() {
@@ -232,41 +170,32 @@ public class ServiceManagerProposalsGridView extends Div {
         musicTextArea.setReadOnly(true);
         computerRelatedIssuesTextArea.setReadOnly(true);
 
+        confirmButton.setText("Budget request resolved");
+        confirmButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+
+        enableButtons(false);
+
         return new FormLayout(recordNumberTextField, clientNameTextField, eventTypeTextField, new Label(),
                 fromDateTextField, toDateTextField, productionStatusTextField, serviceStatusTextField,
                 expectedAttendeesTextField, expectedBudgetNumberField, decorationsTextArea, filmingPhotosTextArea,
                 postersArtWorkTextArea, foodDrinksTextArea, musicTextArea, computerRelatedIssuesTextArea,
-                toSubTeamButton, extraStaffButton, readyButton, extraBudgetButton);
+                confirmButton);
     }
 
-    private Div createGridLayout() {
-        Div gridLayout = new Div();
-        gridLayout.setId("proposal-grid");
-        gridLayout.setWidthFull();
-
-        grid.addColumn(Proposal::getRecordNumber).setHeader("Record Number");
-        grid.addColumn(proposal -> proposal.getClient().getName()).setHeader("Client");
-        grid.addColumn(proposal -> proposal.getEventType().getName()).setHeader("Event Type");
-        grid.addColumn(proposal -> proposal.getFrom().toString()).setHeader("Start Date");
-        grid.addColumn(proposal -> proposal.getProductionProposalStatus().toString())
-                .setHeader("Production Status");
-        grid.addColumn(proposal -> proposal.getServiceProposalStatus().toString())
-                .setHeader("Service Status");
-        grid.setHeightFull();
-
-        gridLayout.add(grid);
-
-        return gridLayout;
-    }
-
-    private List<Proposal> getItems() {
-        return proposalService.getAllProposalsByStatus(Set.of(ProposalStatus.INITIATED,
-                ProposalStatus.PROCESSING));
+    private void enableButtons(boolean enableButtons) {
+        confirmButton.setEnabled(enableButtons);
     }
 
     private void refreshGrid() {
         grid.select(null);
-        grid.setItems();
+        grid.setItems(getItems());
+    }
+
+    private List<Proposal> getItems() {
+        return Stream.concat(
+                proposalService.getAllProposalsByProductionStatus(Set.of(ProposalStatus.EXTRA_BUDGET_REQUESTED)).stream(),
+                proposalService.getAllProposalsByServiceStatus(Set.of(ProposalStatus.EXTRA_BUDGET_REQUESTED)).stream())
+                .distinct().collect(Collectors.toList());
     }
 
     private void clearForm() {
@@ -287,6 +216,6 @@ public class ServiceManagerProposalsGridView extends Div {
         musicTextArea.clear();
         computerRelatedIssuesTextArea.clear();
 
-        hideButtons();
+        enableButtons(false);
     }
 }
