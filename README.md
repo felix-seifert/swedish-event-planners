@@ -9,7 +9,7 @@ which can be improved. However, we did not focus on all improvement opportunitie
 ## Content
 These are the different topics which are covered in this README.
 * [Login](#login)
-* [Workflow](#worflow)
+* [Event Flow](#event-flow)
 * [Releases](#releases)
 * [Planning](#planning)
 * [Refactoring](#refactoring)
@@ -66,9 +66,27 @@ The following list shows all the users with their user name and which roles they
 * `secretary`: `Secretary`, `EmployeeViewer`
 * `client`: `Client`
 
+For testing purposes, the page `Master Detail` is only visible by the user `mike`. Relevant changes for this can be 
+done with an annotation over the class name of the view and the menu in 
+[`MainView.java`](https://github.com/felix-seifert/swedish-event-planners/blob/main/src/main/java/com/felixseifert/swedisheventplanners/views/main/MainView.java).
+
 ## Event Flow
 
-Add description on how a request gets generated and flow through the application
+When a client approaches Swedish Event Planners, either the CustomerServiceOfficer or the SeniorCustomerServiceOfficer take
+the details for required event and creates a NewRequest. This request is first reviewed by the SeniorCustomerServiceOfficer, 
+and then by the FinancialManager and AdministrationManager, in this order. Every actor can either reject the proposal or forward
+the decision to the next actor. Once all the aprovals for the NewRequest have been issued, the SeniorCustomerServiceOfficer
+notifies the client and sets up a meeting (the meeting happens outside the scope of our program).
+
+After the meeting, either the SeniorCustomerServiceOfficer or the Client itself create a Proposal for the event, including the
+details to be taken into account by production and services teams. When a Proposal is created, two simultaneous workflows start, 
+both of them happening in a similar fashion: the ProductionManager reviews the Proposal and decides to forward it to its subteams 
+or to request extra staff. If extra staff is requested, the workflow stops until the request is approved by the Human Resources 
+department. The ProductionSubteam reviews the request and returns it to the ProductionManager, with an extra budget notification 
+if needed. The ProductionManager can either mark the Proposal as ready or request extra budget to the FinancialManager (only if 
+the Subteam has requested so). Once the FinancialManager approves the request, the ProductionManager marks the Proposal as ready.
+The exact same workflow happens with the ServicesManager and the ServicesSubteam. Once both workflows are marked as ready, the 
+event can take place.
 
 ## Releases
 
