@@ -117,9 +117,6 @@ public class MainView extends AppLayout {
         if(SecurityUtils.isAccessGranted(ReviewedRequestsGridView.class)) {
             tabs.add(createTab("Reviewed Event Requests", ReviewedRequestsGridView.class));
         }
-        if(SecurityUtils.isAccessGranted(ProposalsGridView.class)) {
-            tabs.add(createTab("Proposals", ProposalsGridView.class));
-        }
         if(SecurityUtils.isAccessGranted(ProductionManagerProposalsGridView.class)) {
             tabs.add(createTab("Your proposals", ProductionManagerProposalsGridView.class));
         }
