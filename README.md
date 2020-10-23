@@ -12,9 +12,10 @@ These are the different topics which are covered in this README.
 * [Workflow](#worflow)
 * [Releases](#releases)
 * [Refactoring](#refactoring)
-* [Acceptance Tests](#acceptance-tests)
 * [Planning](#planning)
 * [Metaphor](#metaphor)
+* [Acceptance Tests](#acceptance-tests)
+* [Stand-up Meeting Reports](#stand-up-meeting-reports)
 * [Project Structure](#project-structure)
 * [Run Application](#run-application)
 * [Deploy With Docker](#deploy-with-docker)
@@ -87,6 +88,39 @@ result in missing the set deadlines. As the refactoring is dependent on each dev
 quality is very subjective and other people might have achieved the same differently. We also see improvement potential
 which means that a software project can barely inf an end.
 
+## Planning
+
+Write about sprint, release and time planning. Also consider to write about the assigned risks and values.
+
+## Metaphor
+
+To convince other, non-technical people of the own programme or project, a metaphor is needed to outline the project 
+and creator a greater interest of the other person. Furthermore, creating a metaphor helps to structure the own project 
+clearer.
+
+Our program can be thought as a cook preparing a meal for a group of customers. A brief explanation is given in the 
+following paragraphs, as well a a table mapping metaphor elements with the actual system.
+
+A cook needs to prepare a dish for a group of customers. She selects first a recipe from a book and proposes to her 
+clients. Then, she asks for food preferences and allergies. After making the appropriate changes to the recipe, the 
+cook is ready to start cooking.
+
+First, she needs to check whether she has the required ingredients. If not, buy them. With all the ingredients ready, 
+she can proceed to the actual preparation of the dish. Once the dish is cooked, she needs to check whether the customers 
+are all seated. If so, she can proceed to serve the meal.
+
+| Metaphor                           | System                                                                                                       |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| The cook                           | Swedish Event Planners — the company in charge of preparing the event.                                       |
+| Recipe                             | First request by client.                                                                                     |
+| Group of customers                 | SCSO — in charge of accepting the request in the first place and after some other approvals have taken place.|
+| Preferences                        | Check request with Financial Manager.                                                                        |
+| Allergies                          | Check request with Administration Manager.                                                                   |
+| Check and possibly buy ingredients | Check whether we have sufficient staff and issue a request to HR team if not.                                |
+| Actual cooking                     | Forward tasks to sub-teams.                                                                                  |
+| Check if customers are seated      | Check whether we need extra budget and issue a request to FM if not.                                         |
+| Serve food                         | Actual event.                                                                                                |
+
 ## Acceptance Tests
 
 ### Review Request by FinancialManager
@@ -125,38 +159,7 @@ Successful
 
 See the [story](https://github.com/felix-seifert/swedish-event-planners/issues/6).
 
-## Planning
-
-Write about sprint, release and time planning. Also consider to write about the assigned risks and values.
-
-## Metaphor
-
-To convince other, non-technical people of the own programme or project, a metaphor is needed to outline the project 
-and creator a greater interest of the other person. Furthermore, creating a metaphor helps to structure the own project 
-clearer.
-
-Our program can be thought as a cook preparing a meal for a group of customers. A brief explanation is given in the 
-following paragraphs, as well a a table mapping metaphor elements with the actual system.
-
-A cook needs to prepare a dish for a group of customers. She selects first a recipe from a book and proposes to her 
-clients. Then, she asks for food preferences and allergies. After making the appropriate changes to the recipe, the 
-cook is ready to start cooking.
-
-First, she needs to check whether she has the required ingredients. If not, buy them. With all the ingredients ready, 
-she can proceed to the actual preparation of the dish. Once the dish is cooked, she needs to check whether the customers 
-are all seated. If so, she can proceed to serve the meal.
-
-| Metaphor                           | System                                                                                                       |
-| ---------------------------------- | ------------------------------------------------------------------------------------------------------------ |
-| The cook                           | Swedish Event Planners — the company in charge of preparing the event.                                       |
-| Recipe                             | First request by client.                                                                                     |
-| Group of customers                 | SCSO — in charge of accepting the request in the first place and after some other approvals have taken place.|
-| Preferences                        | Check request with Financial Manager.                                                                        |
-| Allergies                          | Check request with Administration Manager.                                                                   |
-| Check and possibly buy ingredients | Check whether we have sufficient staff and issue a request to HR team if not.                                |
-| Actual cooking                     | Forward tasks to sub-teams.                                                                                  |
-| Check if customers are seated      | Check whether we need extra budget and issue a request to FM if not.                                         |
-| Serve food                         | Actual event.                                                                                                |
+## Stand-up Meeting Reports
 
 ## Project Structure
 
