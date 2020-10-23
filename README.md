@@ -167,8 +167,6 @@ are all seated. If so, she can proceed to serve the meal.
 
 ## Acceptance Tests
 
-We performed acceptance tests in the way that we added acceptance criteria to some stories/GitHub issues.
-
 ### Review Request by FinancialManager
 
 Expected Actions:
