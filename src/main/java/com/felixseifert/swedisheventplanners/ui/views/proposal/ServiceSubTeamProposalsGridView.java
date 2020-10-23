@@ -60,8 +60,8 @@ public class ServiceSubTeamProposalsGridView extends Div {
         splitLayout.addToSecondary(createEditorLayout());
         splitLayout.addToPrimary(createGridLayout());
 
-        grid.setItems(proposalService.getAllProposalsByStatus(Set.of(ProposalStatus.INITIATED,
-                ProposalStatus.PROCESSING)));
+        grid.setItems(proposalService.getAllProposalsByServiceStatus(Set.of(ProposalStatus.UNDER_REVIEW_BY_SUBTEAMS)));
+
 
         grid.asSingleSelect().addValueChangeListener(event -> {
             if(event.getValue() != null) {
@@ -181,8 +181,8 @@ public class ServiceSubTeamProposalsGridView extends Div {
 
     private void refreshGrid() {
         grid.select(null);
-        grid.setItems(proposalService.getAllProposalsByStatus(Set.of(ProposalStatus.INITIATED,
-                ProposalStatus.PROCESSING)));    }
+        grid.setItems(proposalService.getAllProposalsByServiceStatus(Set.of(ProposalStatus.UNDER_REVIEW_BY_SUBTEAMS)));
+    }
 
     private void clearForm() {
         binder.setBean(null);
