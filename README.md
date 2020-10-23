@@ -66,26 +66,23 @@ The following list shows all the users with their user name and which roles they
 * `secretary`: `Secretary`, `EmployeeViewer`
 * `client`: `Client`
 
-For testing purposes, the page `Master Detail` is only visible by the user `mike`. Relevant changes for this can be 
-done with an annotation over the class name of the view and the menu in 
-[`MainView.java`](https://github.com/felix-seifert/swedish-event-planners/blob/main/src/main/java/com/felixseifert/swedisheventplanners/views/main/MainView.java).
-
 ## Event Flow
 
-When a client approaches Swedish Event Planners, either the CustomerServiceOfficer or the SeniorCustomerServiceOfficer take
-the details for required event and creates a NewRequest. This request is first reviewed by the SeniorCustomerServiceOfficer, 
-and then by the FinancialManager and AdministrationManager, in this order. Every actor can either reject the proposal or forward
-the decision to the next actor. Once all the aprovals for the NewRequest have been issued, the SeniorCustomerServiceOfficer
+When a client approaches Swedish Event Planners, either the `CustomerServiceOfficer` or the `SeniorCustomerServiceOfficer` takes 
+the details for a requested event and creates a `NewRequest`. This request is first reviewed by the `SeniorCustomerServiceOfficer` 
+and then by the `FinancialManager` and the `AdministrationManager` in this order. Every actor can either reject the proposal or forward
+the decision to the next actor. Once all the approvals for the `NewRequest` have been issued, the `SeniorCustomerServiceOfficer` 
 notifies the client and sets up a meeting (the meeting happens outside the scope of our program).
 
-After the meeting, either the SeniorCustomerServiceOfficer or the Client itself create a Proposal for the event, including the
-details to be taken into account by production and services teams. When a Proposal is created, two simultaneous workflows start, 
-both of them happening in a similar fashion: the ProductionManager reviews the Proposal and decides to forward it to its subteams 
-or to request extra staff. If extra staff is requested, the workflow stops until the request is approved by the Human Resources 
-department. The ProductionSubteam reviews the request and returns it to the ProductionManager, with an extra budget notification 
-if needed. The ProductionManager can either mark the Proposal as ready or request extra budget to the FinancialManager (only if 
-the Subteam has requested so). Once the FinancialManager approves the request, the ProductionManager marks the Proposal as ready.
-The exact same workflow happens with the ServicesManager and the ServicesSubteam. Once both workflows are marked as ready, the 
+After the meeting, either the `SeniorCustomerServiceOfficer` or the `Client` itself creates a `Proposal` for the event, including the
+details to be taken into account by the production and services teams. When a `Proposal` is created, two simultaneous workflows start, 
+both of them happening in a similar fashion: the `ProductionManager` reviews the `Proposal` and decides to forward it to its sub-teams 
+or to request extra staff (in the example implementation, only one sub-team exists). If extra staff is requested, the workflow stops 
+until the request is approved by the Human Resources department. The `ProductionSubteam` reviews the request and returns it to the 
+`ProductionManager`. If needed, the sub-team can add an extra budget notification. The `ProductionManager` can then either mark the 
+`Proposal` as ready or request extra budget from the `FinancialManager` (only if the sub-team has requested so). Once the 
+`FinancialManager` approves the request, the `ProductionManager` marks the `Proposal` as ready.
+The exact same workflow happens with the `ServicesManager` and the `ServicesSubteam`. Once both workflows are marked as ready, the 
 event can take place.
 
 ## Releases
@@ -138,32 +135,32 @@ considered as better.
 
 ## Metaphor
 
-To convince other, non-technical people of the own programme or project, a metaphor is needed to outline the project 
-and creator a greater interest of the other person. Furthermore, creating a metaphor helps to structure the own project 
-clearer.
+To convince other non-technical people of the own programme or project, a metaphor is needed to outline the project 
+and create a greater interest of the other person. Furthermore, creating a metaphor helps to make the structure of the 
+own project clearer.
 
 Our program can be thought as a cook preparing a meal for a group of customers. A brief explanation is given in the 
-following paragraphs, as well a a table mapping metaphor elements with the actual system.
+following paragraphs. In addition, a table maps metaphor elements to the actual system.
 
-A cook needs to prepare a dish for a group of customers. She selects first a recipe from a book and proposes to her 
+A cook needs to prepare a dish for a group of customers. Firstly she selects a recipe from a book and proposes it to her 
 clients. Then, she asks for food preferences and allergies. After making the appropriate changes to the recipe, the 
 cook is ready to start cooking.
 
-First, she needs to check whether she has the required ingredients. If not, buy them. With all the ingredients ready, 
-she can proceed to the actual preparation of the dish. Once the dish is cooked, she needs to check whether the customers 
-are all seated. If so, she can proceed to serve the meal.
+At the beginning of her cooking session, she needs to check whether she has the required ingredients. If not, she 
+has to buy them. With all the ingredients ready, she can then proceed to the actual preparation of the dish. Once 
+the dish is cooked, she needs to check whether the customers are all seated. If so, she can proceed to serve the meal.
 
 | Metaphor                           | System                                                                                                       |
 | ---------------------------------- | ------------------------------------------------------------------------------------------------------------ |
-| The cook                           | Swedish Event Planners — the company in charge of preparing the event.                                       |
-| Recipe                             | First request by client.                                                                                     |
-| Group of customers                 | SCSO — in charge of accepting the request in the first place and after some other approvals have taken place.|
-| Preferences                        | Check request with Financial Manager.                                                                        |
-| Allergies                          | Check request with Administration Manager.                                                                   |
-| Check and possibly buy ingredients | Check whether we have sufficient staff and issue a request to HR team if not.                                |
-| Actual cooking                     | Forward tasks to sub-teams.                                                                                  |
-| Check if customers are seated      | Check whether we need extra budget and issue a request to FM if not.                                         |
-| Serve food                         | Actual event.                                                                                                |
+| The cook                           | Swedish Event Planners — the company in charge of preparing the event                                        |
+| Recipe                             | First request by client                                                                                      |
+| Group of customers                 | SCSO — in charge of accepting the request in the first place and after some other approvals have taken place |
+| Preferences                        | Check request with Financial Manager                                                                         |
+| Allergies                          | Check request with Administration Manager                                                                    |
+| Check and possibly buy ingredients | Check whether we have sufficient staff and issue a request to HR team if not                                 |
+| Actual cooking                     | Forward tasks to sub-teams                                                                                   |
+| Check if customers are seated      | Check whether we need extra budget and issue a request to FM if not                                          |
+| Serve food                         | Actual event                                                                                                 |
 
 ## Acceptance Tests
 
@@ -182,7 +179,7 @@ Expected Results:
 Test Result:
 Successful
 
-See the [story](https://github.com/felix-seifert/swedish-event-planners/issues/11).
+See this [story](https://github.com/felix-seifert/swedish-event-planners/issues/11).
 
 ### Proposal forwarded to Sub-teams by ProductionManager
 Proposal forwarded to Sub-teams by Production Manager
@@ -201,7 +198,7 @@ Expected Results:
 Test Result:
 Successful
 
-See the [story](https://github.com/felix-seifert/swedish-event-planners/issues/6).
+See this [story](https://github.com/felix-seifert/swedish-event-planners/issues/6).
 
 ## Stand-up Meeting Reports
 
@@ -253,3 +250,8 @@ Once the Docker image is correctly built, you can test it locally using
 docker run -p 8080:8080 sep:latest
 ```
 
+In addition, the code of the main branch is available as a docker image online and can be pulled and run using
+
+```
+docker run -p 8080:8080 seifertfelix/sep:latest
+```
