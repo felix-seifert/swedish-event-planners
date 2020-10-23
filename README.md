@@ -110,6 +110,14 @@ quality is very subjective and other people might have achieved the same differe
 which means that a software project can barely inf an end. Some refactoring ideas can be seen on the [page of our 
 issues](https://github.com/felix-seifert/swedish-event-planners/issues).
 
+## Pair Programming
+
+The approach of developing in pairs helps a lot too deal with huge difference concerning knowledge; as a developer 
+you can benefit greatly by being thought the development skills and knowledge of the other developer. Also, the 
+whole process is improved by combining different ways of thinking. As it might be more time-consuming because two 
+developers have to work at the same time, so much less communication is needed after the implementation that it can be 
+considered as better.
+
 ## Metaphor
 
 To convince other, non-technical people of the own programme or project, a metaphor is needed to outline the project 
@@ -140,6 +148,8 @@ are all seated. If so, she can proceed to serve the meal.
 | Serve food                         | Actual event.                                                                                                |
 
 ## Acceptance Tests
+
+We performed acceptance tests in the way that we added acceptance criteria to some stories/GitHub issues.
 
 ### Review Request by FinancialManager
 
@@ -227,4 +237,3 @@ Once the Docker image is correctly built, you can test it locally using
 docker run -p 8080:8080 sep:latest
 ```
 
-...Consider to add Docker image to Docker Hub...
