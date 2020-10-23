@@ -8,6 +8,7 @@ import com.felixseifert.swedisheventplanners.ui.views.helloworld.HelloWorldView;
 import com.felixseifert.swedisheventplanners.ui.views.masterdetail.MasterDetailView;
 import com.felixseifert.swedisheventplanners.ui.views.newrequest.*;
 import com.felixseifert.swedisheventplanners.ui.views.personform.PersonFormView;
+import com.felixseifert.swedisheventplanners.ui.views.proposal.*;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentUtil;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -112,6 +113,24 @@ public class MainView extends AppLayout {
         }
         if(SecurityUtils.isAccessGranted(ReviewedRequestsGridView.class)) {
             tabs.add(createTab("Reviewed Event Requests", ReviewedRequestsGridView.class));
+        }
+        if(SecurityUtils.isAccessGranted(CreateProposalView.class)) {
+            tabs.add(createTab("Create Proposal", CreateProposalView.class));
+        }
+        if(SecurityUtils.isAccessGranted(ProductionManagerProposalsGridView.class)) {
+            tabs.add(createTab("Your proposals", ProductionManagerProposalsGridView.class));
+        }
+        if(SecurityUtils.isAccessGranted(ProductionSubTeamProposalsGridView.class)) {
+            tabs.add(createTab("Production sub-team proposals", ProductionSubTeamProposalsGridView.class));
+        }
+        if(SecurityUtils.isAccessGranted(ServiceManagerProposalsGridView.class)) {
+            tabs.add(createTab("Your proposals", ServiceManagerProposalsGridView.class));
+        }
+        if(SecurityUtils.isAccessGranted(ServiceSubTeamProposalsGridView.class)) {
+            tabs.add(createTab("Service sub-team proposals", ServiceSubTeamProposalsGridView.class));
+        }
+        if(SecurityUtils.isAccessGranted(ClosedProposalsGridView.class)) {
+            tabs.add(createTab("Closed proposals", ClosedProposalsGridView.class));
         }
         if(SecurityUtils.isAccessGranted(ClientView.class)) {
             tabs.add(createTab("Clients", ClientView.class));
