@@ -164,41 +164,43 @@ the dish is cooked, she needs to check whether the customers are all seated. If 
 
 ## Acceptance Tests
 
+We approached the acceptance tests slightly differently: For some stories, we defined acceptance criteria before 
+starting to tackle the implementation of the story. This also helped when an implementation started and the exact 
+business goal was not clear enough. Similar to test-driven development, these criteria could be used to verify that 
+the implementation corresponds to the requirements. The issues [#1](https://github.com/felix-seifert/swedish-event-planners/issues/1), 
+[#6](https://github.com/felix-seifert/swedish-event-planners/issues/6) and [#9](https://github.com/felix-seifert/swedish-event-planners/issues/9)
+how we used these acceptance criteria.
+
+The two following acceptance tests where produced after the implementation was done to comply with the given exmaples.
+
 ### Review Request by FinancialManager
 
 Expected Actions:
-1. After login, FinancialManager selects a New Request from list.
-2. FinancialManager reviews the New Request.
-3. FinancialManager clicks on `Reject request' button.
+1. After login, FinancialManager selects specific 'New Request' from list.
+2. FinancialManager reviews New Request.
+3. FinancialManager clicks on 'Approve request' or 'Reject request' button.
 
 Expected Results:
-1. FinancialManager sees New Request list.
-2. The details for the selected New Request appear on the right half of the screen.
-3. After clicking the button, FinancialManager can no longer see the New Request.
+1. FinancialManager sees NewRequest list with requests which are assigned to him/her.
+2. Details for selected NewRequest appear in form on right half of screen.
+3. After clicking button, FinancialManager can no longer see NewRequest and appropriate action is performed.
 
-Test Result:
-Successful
+See this [story](https://github.com/felix-seifert/swedish-event-planners/issues/11) for details.
 
-See this [story](https://github.com/felix-seifert/swedish-event-planners/issues/11).
-
-### Proposal forwarded to Sub-teams by ProductionManager
-Proposal forwarded to Sub-teams by Production Manager
+### Proposal Forwarded to Sub-teams by ProductionManager
 
 Expected Actions:
-1. After login, ProductionManager selects a Proposal from list.
+1. After login, ProductionManager selects specific Proposal from list.
 2. ProductionManager reviews the Proposal.
-3. ProductionManager clicks on `Forward to sub-teams' button.
+3. ProductionManager clicks on 'Forward to sub-teams' or 'Request extra staff' button.
 
 Expected Results:
-1. ProductionManager sees Proposal list.
-2. The details for the selected Proposal appear on the right half of the screen.
-3. After clicking the button, ProductionManager can still see forwarded Proposals in his/her grid 
-(as long as hi/her subteam works on it), but its status has changed.
+1. ProductionManager sees Proposal list with proposal which are assigned to him/her.
+2. Details for selected Proposal appear on right half of screen.
+3. After clicking button, ProductionManager can still see forwarded Proposals in his/her grid 
+(as long as hi/her sub-team works on it). Proposal's status has changed.
 
-Test Result:
-Successful
-
-See this [story](https://github.com/felix-seifert/swedish-event-planners/issues/6).
+See this [story](https://github.com/felix-seifert/swedish-event-planners/issues/6) for details.
 
 ## Stand-up Meeting Reports
 
