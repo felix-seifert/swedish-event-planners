@@ -1,5 +1,16 @@
 package com.felixseifert.swedisheventplanners.backend.model;
 
+import java.time.LocalDateTime;
+import java.util.Objects;
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import com.felixseifert.swedisheventplanners.backend.model.enums.EventType;
 import com.felixseifert.swedisheventplanners.backend.model.enums.EventTypeConverter;
 import com.felixseifert.swedisheventplanners.backend.model.enums.ProposalStatus;
@@ -7,14 +18,11 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
-import java.time.LocalDateTime;
-
 @Entity
 @Table(name = "proposals")
 @Getter
 @Setter
-public class Proposal extends AbstractEntity{
+public class Proposal extends AbstractEntity {
 
     @Column(nullable = false, length = 10)
     private String recordNumber;
@@ -64,11 +72,11 @@ public class Proposal extends AbstractEntity{
     }
 
     public ProposalStatus getProposalStatus() {
-        if(ProposalStatus.INITIATED.equals(productionProposalStatus)
+        if (ProposalStatus.INITIATED.equals(productionProposalStatus)
                 && ProposalStatus.INITIATED.equals(serviceProposalStatus)) {
             return ProposalStatus.INITIATED;
         }
-        if(ProposalStatus.CLOSED.equals(productionProposalStatus)
+        if (ProposalStatus.CLOSED.equals(productionProposalStatus)
                 && ProposalStatus.CLOSED.equals(serviceProposalStatus)) {
             return ProposalStatus.CLOSED;
         }
@@ -76,15 +84,39 @@ public class Proposal extends AbstractEntity{
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        return super.equals(o);
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof Proposal)) {
+            return false;
+        }
+        Proposal proposal = (Proposal) obj;
+        return Objects.equals(this.getId(), proposal.getId()) &&
+                Objects.equals(recordNumber, proposal.recordNumber) &&
+                Objects.equals(client, proposal.client) &&
+                eventType == proposal.eventType &&
+                Objects.equals(from, proposal.from) &&
+                Objects.equals(to, proposal.to) &&
+                Objects.equals(expectedNumberOfAttendees, proposal.expectedNumberOfAttendees) &&
+                Objects.equals(expectedBudget, proposal.expectedBudget) &&
+                Objects.equals(decorations, proposal.decorations) &&
+                Objects.equals(filmingPhotos, proposal.filmingPhotos) &&
+                Objects.equals(postersArtWork, proposal.postersArtWork) &&
+                Objects.equals(foodDrinks, proposal.foodDrinks) &&
+                Objects.equals(music, proposal.music) &&
+                Objects.equals(computerRelatedIssues, proposal.computerRelatedIssues) &&
+                proposalStatus == proposal.proposalStatus &&
+                productionProposalStatus == proposal.productionProposalStatus &&
+                serviceProposalStatus == proposal.serviceProposalStatus;
     }
 
     @Override
     public int hashCode() {
-        return 44;
+        return Objects.hash(this.getId(), recordNumber, client, eventType, from, to,
+                expectedNumberOfAttendees, expectedBudget, decorations, filmingPhotos,
+                postersArtWork, foodDrinks, music, computerRelatedIssues,
+                proposalStatus, productionProposalStatus, serviceProposalStatus);
     }
 
     @Override
